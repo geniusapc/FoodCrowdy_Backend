@@ -1,0 +1,9 @@
+{
+  "extends": ["airbnb", "prettier", "plugin:node/recommended"],
+  "plugins": ["prettier"],
+  "rules": {
+    "no-underscore-dangle": "off",
+    "import/newline-after-import": "off",
+    "no-plusplus": "off"
+  }
+}
