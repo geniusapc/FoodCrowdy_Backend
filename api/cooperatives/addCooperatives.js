@@ -1,10 +1,10 @@
 const { v4: uuidv4 } = require('uuid');
-const cloudinary = require('../config/cloudinary');
-const Cooperative = require('../models/Cooperative');
-const { response, errorResponse } = require('../utils/response');
+const cloudinary = require('../../config/cloudinary');
+const Cooperative = require('../../models/Cooperative');
+const { response } = require('../../utils/response');
 
 module.exports = async (req, res, next) => {
-  if (!req.file) return errorResponse(res, 422, 'Image is required');
+  if (!req.file) throw new Error('Image is required');
 
   if (req.file) {
     const { secure_url: image } = await cloudinary.v2.uploader
@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
         throw err.error;
       });
 
-    req.body.image = image;
+    req.body.logo = image;
   }
   const apiKey = uuidv4().replace(/-/g, '');
 

@@ -5,14 +5,12 @@ const { response } = require('../../utils/response');
 
 module.exports = async (req, res, next) => {
   const { cooperativeId } = req.user;
-
   const prod = await CoopProducts.findOne({
-    _id: req.body.id,
     cooperativeId,
-  }).select({ image: 1 });
+    _id: req.body.id,
+  }).select(['image']);
 
-  if (!prod)
-    return res.status(422).send({ message: 'Invalid cooperative product' });
+  if (!prod) throw new Error('Invalid cooperative product');
 
   if (req.file) {
     const publicId = getPublicId(prod.image);

@@ -3,11 +3,14 @@ const { response } = require('../../utils/response');
 
 module.exports = async (req, res, next) => {
   const { cooperativeId, permission } = req.user;
+
   let filter = [];
   let condition = {};
+
   if (permission === 'admin') {
+    condition.visibility = req.query.visibility;
+    condition.cooperativeId = req.query.cooperativeId;
     filter = [];
-    condition = {};
   } else {
     condition = { visibility: 1, cooperativeId };
     filter = [

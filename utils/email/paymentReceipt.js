@@ -562,7 +562,7 @@ const payload = ({ paymentDetails, invoice }) => {
                                             >
                                               <br />
                                               Dear, ${
-                                                paymentDetails.customer.name
+                                                invoice.user.name
                                               }! <br /><br />
                                               Your order number
                                               <a
@@ -572,7 +572,7 @@ const payload = ({ paymentDetails, invoice }) => {
                                                   color: #008080;
                                                 "
                                                 href="#"
-                                                >${paymentDetails.txRef}</a
+                                                >${invoice.orderRef}</a
                                               >
                                               registered! Check your order status
                                               at <br />
@@ -896,9 +896,7 @@ const payload = ({ paymentDetails, invoice }) => {
                                               font-family: Open Sans, Helvetica,
                                                 Tahoma, Arial, sans-serif;
                                             "
-                                            >#${
-                                              paymentDetails.chargedAmount
-                                            }</span
+                                            >#${paymentDetails.amount}</span
                                           >
                                         </td>
                                       </tr>
@@ -1291,7 +1289,7 @@ const payload = ({ paymentDetails, invoice }) => {
                                         font-size: 14px;
                                       "
                                     >
-                                    ${invoice.deliveryAddress}
+                                    ${invoice.delivery.address}
                                     
                                     </div>
                                   </td>
@@ -1464,10 +1462,11 @@ const sendPaymentReceipt = async ({ paymentDetails, invoice }) => {
   const mail = payload({ paymentDetails, invoice });
   const msg = {
     from: 'FoodCrowdy <info@foodcrowdy.com>',
-    to: paymentDetails.customer.email,
+    to: invoice.user.email,
     subject: 'Receipt (Foodcrowdy) ',
     html: `${mail}`,
   };
   await sendMail(msg);
 };
+
 module.exports = sendPaymentReceipt;

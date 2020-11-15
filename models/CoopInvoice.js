@@ -46,10 +46,6 @@ const schema = new Schema(
         type: String,
         default: 'NGN',
       },
-      // state: {
-      //   type: String,
-      //   required: true,
-      // },
     },
     totalPrice: {
       type: Number,

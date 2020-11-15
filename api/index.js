@@ -6,53 +6,86 @@ const { storage } = require('../utils/image');
 
 const upload = multer({ storage, fileFilter });
 
-const addCoperatives = require('./addCooperatives');
-const getAllCooperative = require('./getAllCooperative');
+const addCoperatives = require('./cooperatives/addCooperatives');
+const getAllCooperative = require('./cooperatives/getAllCooperative');
 const addgift = require('./gift/addCoopGift');
 const getGift = require('./gift/getCoopGift');
 const getClaimedGift = require('./gift/getClaimedGift');
+const claimGift = require('./gift/claimGift');
 const getAllCoopProduct = require('./products/getAllCoopProduct');
 const addCoopProduct = require('./products/addCoopProduct');
 const editCoopProduct = require('./products/editCoopProduct');
 
 const checkout = require('./purchase/checkout');
 const paymentVerification = require('./purchase/paymentVerification');
+const {
+  auth,
+  adminPrevillege,
+  adminCheckCoopId,
+} = require('../middleware/auth');
 
 const {
+  valAddCoop,
   valUploadCoopProduct,
+  valGetProduct,
   valCheckout,
   valPayment,
   valEditCoopProduct,
+  valGetGift,
   valAddGift,
 } = require('../middleware/validation/cooperative');
 
-router.use((req, res, next) => {
-  req.user = {
-    cooperativeId: '5fad88ca0e725a2410bb6d8c',
-    permission: 'admin',
-  };
-  next();
-});
+router.use(auth);
 
 router
   .route('/')
-  .get(getAllCooperative)
-  .post(upload.single('image'), addCoperatives);
+  .get(adminPrevillege, getAllCooperative)
+  .post(
+    adminPrevillege,
+    adminCheckCoopId,
+    upload.single('logo'),
+    valAddCoop,
+    addCoperatives
+  );
 
-router.post('/purchase/checkout', valCheckout, checkout);
-router.post('/purchase/payment-verification', valPayment, paymentVerification);
+router.post('/purchase/checkout', adminCheckCoopId, valCheckout, checkout);
+router.post(
+  '/purchase/payment-verification',
+  adminCheckCoopId,
+  valPayment,
+  paymentVerification
+);
 
 router
   .route('/gift')
-  .get(getGift)
-  .post(upload.single('image'), valAddGift, addgift);
-
-router.get('/claimed-gift', getClaimedGift);
+  .get(adminPrevillege, adminCheckCoopId, valGetGift, getGift)
+  .post(
+    adminPrevillege,
+    adminCheckCoopId,
+    upload.single('image'),
+    valAddGift,
+    addgift
+  );
+router
+  .route('/gift/claim')
+  .get(adminCheckCoopId, adminPrevillege, getClaimedGift)
+  .post(adminCheckCoopId, adminPrevillege, claimGift);
 
 router
   .route('/products')
-  .get(getAllCoopProduct)
-  .post(upload.single('image'), valUploadCoopProduct, addCoopProduct)
-  .patch(upload.single('image'), valEditCoopProduct, editCoopProduct);
+  .get(valGetProduct, adminCheckCoopId, getAllCoopProduct)
+  .post(
+    adminPrevillege,
+    adminCheckCoopId,
+    upload.single('image'),
+    valUploadCoopProduct,
+    addCoopProduct
+  )
+  .patch(
+    adminPrevillege,
+    upload.single('image'),
+    valEditCoopProduct,
+    editCoopProduct
+  );
 
 module.exports = router;

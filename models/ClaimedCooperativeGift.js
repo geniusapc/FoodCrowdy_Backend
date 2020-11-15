@@ -3,23 +3,40 @@ const { Schema } = mongoose;
 
 const schema = new Schema(
   {
-    userId: {
-      type: mongoose.Types.ObjectId,
-      required: true,
+    user: {
+      id: {
+        type: String,
+        required: true,
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+      email: {
+        type: String,
+        required: true,
+      },
+      phoneNumber: {
+        type: String,
+        required: true,
+      },
     },
     cooperativeId: {
       type: mongoose.Types.ObjectId,
       required: true,
+      ref: 'Cooperative',
     },
-    gift: [
-      {
-        giftId: { type: mongoose.Types.ObjectId, required: true },
-        quantity: { type: String, required: true },
-      },
-    ],
-    address: {
+    tagName: {
       type: String,
       required: true,
+    },
+    delivery: {
+      address: {
+        type: String,
+      },
+      price: {
+        type: String,
+      },
     },
     code: {
       type: String,

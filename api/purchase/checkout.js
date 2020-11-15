@@ -1,6 +1,6 @@
 const Invoice = require('../../models/CoopInvoice');
 const CoopProducts = require('../../models/CoopProducts');
-const { response, errorResponse } = require('../../utils/response');
+const { response } = require('../../utils/response');
 
 const generateUniqueNumber = () =>
   Math.random().toString(36).substring(2).toUpperCase();
@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
     .lean();
 
   if (!dbProduct.length || productIds.length !== dbProduct.length)
-    return errorResponse(res, 422, 'Cart contains Invalid product');
+    throw new Error('Cart contains Invalid product');
 
   const mergedProductRequest = products.map((item) => ({
     ...item,
@@ -36,7 +36,7 @@ module.exports = async (req, res, next) => {
 
   // check for product availability
   const { error } = productValidation(mergedProductRequest);
-  if (error.length) return res.status(422).send({ message: error[0] });
+  if (error.length) throw new Error(error[0]);
 
   let orderRef = generateUniqueNumber();
 

@@ -3,23 +3,28 @@ const { Schema } = mongoose;
 
 const schema = new Schema(
   {
-    coopId: {
+    name: {
       type: String,
-      required: true,
+      required: [true, 'Name is required'],
     },
     apiKey: {
       type: String,
-      required: true,
+      required: [true, 'Api key is required'],
+      unique: true,
     },
-    name: {
+    permission: {
       type: String,
-      required: true,
+      default: 'cooperative',
     },
-    image: {
+    accessKey: {
       type: String,
-      required: true,
+      required: [true, 'Access key is required'],
     },
     authUrl: {
+      type: String,
+      default: null,
+    },
+    paymentUrl: {
       type: String,
       default: null,
     },
@@ -27,9 +32,9 @@ const schema = new Schema(
       type: String,
       default: null,
     },
-    paymentUrl: {
+    logo: {
       type: String,
-      default: null,
+      required: true,
     },
   },
   { timestamps: true }

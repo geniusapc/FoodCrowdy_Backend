@@ -2,7 +2,22 @@
 const Joi = require('@hapi/joi');
 Joi.objectId = require('joi-objectid')(Joi);
 
-const { errorResponse } = require('../../utils/response');
+module.exports.valAddCoop = (req, res, next) => {
+  const { error, value } = Joi.object()
+    .keys({
+      name: Joi.string().trim().required(),
+      accessKey: Joi.string().trim().required(),
+      authUrl: Joi.string().uri().trim().required(),
+      paymentUrl: Joi.string().uri().trim().required(),
+      paymentVerificationUrl: Joi.string().uri().trim().required(),
+    })
+    .validate(req.body);
+
+  if (error) throw error;
+
+  req.body = value;
+  next();
+};
 
 const productFields = () => ({
   title: Joi.string().trim().required(),
@@ -16,6 +31,23 @@ const productFields = () => ({
   coopPercentProfit: Joi.number().required(),
 });
 
+module.exports.valGetProduct = (req, res, next) => {
+  const { error, value } = Joi.object()
+    .keys({
+      visibility: Joi.number().valid(0, 1),
+      cooperativeId: Joi.string(),
+    })
+    .validate({
+      visibility: req.query.visibility,
+      cooperativeId: req.query.cooperativeId,
+    });
+
+  if (error) throw error;
+
+  req.body = value;
+  next();
+};
+
 module.exports.valUploadCoopProduct = (req, res, next) => {
   const { error, value } = Joi.object()
     .keys({
@@ -23,7 +55,7 @@ module.exports.valUploadCoopProduct = (req, res, next) => {
     })
     .validate(req.body);
 
-  if (error) return errorResponse(res, 422, error.details[0].message);
+  if (error) throw error;
 
   req.body = value;
   next();
@@ -38,7 +70,7 @@ module.exports.valEditCoopProduct = (req, res, next) => {
     })
     .validate(req.body);
 
-  if (error) return errorResponse(res, 422, error.details[0].message);
+  if (error) throw error;
 
   req.body = value;
   next();
@@ -51,6 +83,7 @@ module.exports.valCheckout = (req, res, next) => {
         id: Joi.string().trim().required(),
         name: Joi.string().trim().required(),
         email: Joi.string().trim().required(),
+        phoneNumber: Joi.string().trim().required(),
       }),
 
       products: Joi.array()
@@ -71,7 +104,7 @@ module.exports.valCheckout = (req, res, next) => {
     })
     .validate(req.body);
 
-  if (error) return errorResponse(res, 422, error.details[0].message);
+  if (error) throw error;
 
   req.body = value;
   next();
@@ -86,7 +119,47 @@ module.exports.valPayment = (req, res, next) => {
     })
     .validate(req.body);
 
-  if (error) return errorResponse(res, 422, error.details[0].message);
+  if (error) throw error;
+
+  req.body = value;
+  next();
+};
+
+module.exports.valGetGift = (req, res, next) => {
+  const { error, value } = Joi.object()
+    .keys({
+      visibility: Joi.number().valid(0, 1),
+    })
+    .validate({ visibility: req.query.visibility });
+
+  if (error) throw error;
+
+  req.body = value;
+  next();
+};
+module.exports.valClaimGift = (req, res, next) => {
+  const { error, value } = Joi.object()
+    .keys({
+      user: Joi.object().keys({
+        id: Joi.string().trim().required(),
+        name: Joi.string().trim().required(),
+        email: Joi.string().trim().lowercase().required(),
+        phoneNumber: Joi.number().required(),
+      }),
+      delivery: Joi.object().keys({
+        address: {
+          type: String,
+        },
+        price: {
+          type: String,
+        },
+      }),
+      cooperativeId: Joi.string().required(),
+      tagName: Joi.string().required(),
+    })
+    .validate({ visibility: req.query.visibility });
+
+  if (error) throw error;
 
   req.body = value;
   next();
@@ -96,13 +169,13 @@ module.exports.valAddGift = (req, res, next) => {
   const { error, value } = Joi.object()
     .keys({
       name: Joi.string().lowercase().trim().required(),
-      cooperativeId: Joi.objectId().required(),
       qty: Joi.number().required(),
+      unit: Joi.string().required(),
       tagName: Joi.string().required(),
     })
     .validate(req.body);
 
-  if (error) return errorResponse(res, 422, error.details[0].message);
+  if (error) throw error;
 
   req.body = value;
   next();
@@ -119,7 +192,7 @@ module.exports.valAddCooperative = (req, res, next) => {
     })
     .validate(req.body);
 
-  if (error) return errorResponse(res, 422, error.details[0].message);
+  if (error) throw error;
 
   req.body = value;
   next();

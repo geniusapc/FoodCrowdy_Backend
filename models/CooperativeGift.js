@@ -8,20 +8,29 @@ const schema = new Schema(
       required: true,
     },
     cooperativeId: {
-      type: String,
+      type: mongoose.Types.ObjectId,
       required: true,
+      ref: 'Cooperative',
     },
     qty: {
       type: Number,
       required: true,
     },
+    tagName: {
+      type: String,
+      required: true,
+    },
+    unit: {
+      type: String,
+      required: true,
+    },
     image: {
-      publicId: {
-        type: String,
-      },
-      secureUrl: {
-        type: String,
-      },
+      type: String,
+    },
+    visibility: {
+      type: Number,
+      enum: [0, 1],
+      default: 0,
     },
   },
   { timestamps: true }

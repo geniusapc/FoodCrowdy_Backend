@@ -7,7 +7,7 @@ const Payment = require('../../models/CooperativePayment');
 const sendMail = require('../../utils/email/paymentReceipt');
 
 const { purchaseAlert } = require('../../utils/sms/purchaseAlert');
-const { response, errorResponse } = require('../../utils/response');
+const { response } = require('../../utils/response');
 
 const reduceProductQuantity = async ({ paymentDetails, invoice }) => {
   if (paymentDetails && paymentDetails.status === 'successful') {
@@ -44,18 +44,14 @@ const reduceProductQuantity = async ({ paymentDetails, invoice }) => {
 module.exports = async (req, res, next) => {
   const { orderRef } = req.body;
 
-  const invoice = await Invoice.findOne({ orderRef })
-    .select(['userId', 'products'])
-    .lean();
+  const invoice = await Invoice.findOne({ orderRef }).lean();
 
-  if (!invoice)
-    return errorResponse(res, 422, `Order reference ${orderRef} not found`);
+  if (!invoice) throw new Error(`Order reference ${orderRef} not found`);
 
   const result = await Payment.findOne({ orderRef });
 
-  if (result) {
-    return errorResponse(res, 422, `Payment has been verified already`);
-  }
+  if (result) throw new Error('Payment has been verified already');
+
   const paymentDetails = await Payment.create({
     ...req.body,
     paymentRef: uuidv4(),
@@ -65,6 +61,8 @@ module.exports = async (req, res, next) => {
 
   await purchaseAlert();
   await reduceProductQuantity({ paymentDetails, invoice });
+
+
 
   const message = 'Payment verified  successfully';
   return response(res, next, 200, null, message);
