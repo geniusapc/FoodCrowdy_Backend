@@ -13,6 +13,7 @@ const getGift = require('./gift/getCoopGift');
 const getClaimedGift = require('./gift/getClaimedGift');
 const claimGift = require('./gift/claimGift');
 const getAllCoopProduct = require('./products/getAllCoopProduct');
+const getCoopProduct = require('./products/getCoopProduct');
 const addCoopProduct = require('./products/addCoopProduct');
 const editCoopProduct = require('./products/editCoopProduct');
 
@@ -81,5 +82,7 @@ router
     valEditCoopProduct,
     editCoopProduct
   );
+
+router.get('/products/:productId', adminCheckCoopId, getCoopProduct);
 
 module.exports = router;
