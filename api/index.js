@@ -40,13 +40,7 @@ router.use(auth);
 router
   .route('/')
   .get(adminPrevillege, getAllCooperative)
-  .post(
-    adminPrevillege,
-    adminCheckCoopId,
-    upload.single('logo'),
-    valAddCoop,
-    addCoperatives
-  );
+  .post(adminPrevillege, upload.single('logo'), valAddCoop, addCoperatives);
 
 router.post('/purchase/checkout', adminCheckCoopId, valCheckout, checkout);
 router.post(
