@@ -29,16 +29,25 @@ const schema = new Schema(
       type: String,
       required: true,
     },
+
     delivery: {
-      price: {
+      type: {
         type: String,
-        required: true,
+        enum: ['pickup', 'door delivery'],
       },
-      phoneNumber: {
+      state: {
         type: String,
         required: true,
       },
       address: {
+        type: String,
+        required: true,
+      },
+      price: {
+        type: Number,
+        required: true,
+      },
+      phoneNumber: {
         type: String,
         required: true,
       },

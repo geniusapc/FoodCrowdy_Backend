@@ -96,6 +96,7 @@ module.exports.valCheckout = (req, res, next) => {
         .required(),
 
       delivery: Joi.object().keys({
+        type: Joi.string().valid(['pickup', 'door delivery']).required(),
         price: Joi.number().required(),
         address: Joi.string().trim().required(),
         state: Joi.string().trim().required(),
@@ -147,12 +148,11 @@ module.exports.valClaimGift = (req, res, next) => {
         phoneNumber: Joi.number().required(),
       }),
       delivery: Joi.object().keys({
-        address: {
-          type: String,
-        },
-        price: {
-          type: String,
-        },
+        type: Joi.string().valid(['pickup', 'door delivery']).required(),
+        state: Joi.string().trim().required(),
+        address: Joi.string().trim().required(),
+        price: Joi.string().trim().required(),
+        phoneNumber: Joi.string().trim().required(),
       }),
       cooperativeId: Joi.string().required(),
       tagName: Joi.string().required(),

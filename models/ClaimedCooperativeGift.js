@@ -31,11 +31,29 @@ const schema = new Schema(
       required: true,
     },
     delivery: {
+      type: {
+        type: String,
+        enum: ['pickup', 'door delivery'],
+      },
+      state: {
+        type: String,
+        required: true,
+      },
       address: {
         type: String,
+        required: true,
       },
       price: {
+        type: Number,
+        required: true,
+      },
+      phoneNumber: {
         type: String,
+        required: true,
+      },
+      currency: {
+        type: String,
+        default: 'NGN',
       },
     },
     code: {
