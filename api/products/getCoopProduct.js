@@ -3,16 +3,16 @@ const { response } = require('../../utils/response');
 
 module.exports = async (req, res, next) => {
   const { cooperativeId, permission } = req.user;
-  const { visibility } = req.query;
+  //   const { visibility } = req.query;
   const { productId } = req.params;
 
   let filter = [];
-  let condition = { cooperativeId, _id: productId };
+  const condition = { cooperativeId, _id: productId };
 
-  if (permission === 'admin' && visibility) {
+  if (permission === 'admin') {
     // condition.visibility = visibility;
   } else {
-    condition = { visibility: 1 };
+    condition.visibility = 1;
     filter = [
       '-cooperativeId',
       '-landingCost',
