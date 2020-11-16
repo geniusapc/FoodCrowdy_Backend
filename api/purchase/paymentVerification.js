@@ -43,6 +43,7 @@ const reduceProductQuantity = async ({ paymentDetails, invoice }) => {
 
 module.exports = async (req, res, next) => {
   const { orderRef } = req.body;
+  const { cooperativeId } = req.user;
 
   const invoice = await Invoice.findOne({ orderRef }).lean();
 
@@ -54,6 +55,7 @@ module.exports = async (req, res, next) => {
 
   const paymentDetails = await Payment.create({
     ...req.body,
+    cooperativeId,
     paymentRef: uuidv4(),
   });
 
@@ -61,8 +63,6 @@ module.exports = async (req, res, next) => {
 
   await purchaseAlert();
   await reduceProductQuantity({ paymentDetails, invoice });
-
-
 
   const message = 'Payment verified  successfully';
   return response(res, next, 200, null, message);

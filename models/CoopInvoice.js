@@ -47,10 +47,6 @@ const schema = new Schema(
         type: Number,
         required: true,
       },
-      phoneNumber: {
-        type: String,
-        required: true,
-      },
       currency: {
         type: String,
         default: 'NGN',
