@@ -86,6 +86,7 @@ schema.pre('save', async function (next) {
 
 schema.methods.compareTransactionPin = async function (pin) {
   const user = this;
+  if(!user.transactionPin) return false
   const result = await bcrypt.compare(pin.toString(), user.transactionPin);
   return result;
 };

@@ -72,6 +72,7 @@ module.exports = async (req, res, next) => {
       return res.status(422).send({ message: 'transaction pin is required' });
 
     const pinIsValid = await user.compareTransactionPin(transactionPin);
+    
     if (!pinIsValid)
       return res.status(422).send({ message: 'Invalid transaction pin' });
 

@@ -19,6 +19,7 @@ const editCoopProduct = require('./products/editCoopProduct');
 
 const checkout = require('./purchase/checkout');
 const paymentVerification = require('./purchase/paymentVerification');
+const getUserPurchase = require('./purchase/getUserPurchase');
 const {
   auth,
   adminPrevillege,
@@ -50,6 +51,7 @@ router.post(
   valPayment,
   paymentVerification
 );
+router.get('/purchase', adminCheckCoopId, getUserPurchase);
 
 router
   .route('/gift')
