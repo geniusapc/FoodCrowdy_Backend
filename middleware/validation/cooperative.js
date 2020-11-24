@@ -115,7 +115,9 @@ module.exports.valPayment = (req, res, next) => {
     .keys({
       orderRef: Joi.string().trim().required(),
       amount: Joi.number().required(),
-      status: Joi.string().valid('successful').trim().required(),
+      status: Joi.string().valid('successful').trim(),
+      transactionPin: Joi.number().min(4),
+      type: Joi.string().trim().valid('fcWallet', 'coopWallet').required(),
     })
     .validate(req.body);
 
