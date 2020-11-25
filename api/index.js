@@ -19,6 +19,8 @@ const editCoopProduct = require('./products/editCoopProduct');
 
 const checkout = require('./purchase/checkout');
 const paymentVerification = require('./purchase/paymentVerification');
+const getUserPurchase = require('./purchase/getUserPurchase');
+const flutterwaveWebhook = require('./purchase/flutterwaveWebhook');
 const {
   auth,
   adminPrevillege,
@@ -36,6 +38,9 @@ const {
   valAddGift,
 } = require('../middleware/validation/cooperative');
 
+// routes doesnt needs authentication
+router.post('/purchase/flutter-payment', flutterwaveWebhook);
+
 router.use(auth);
 
 router
@@ -50,6 +55,7 @@ router.post(
   valPayment,
   paymentVerification
 );
+router.get('/purchase', adminCheckCoopId, getUserPurchase);
 
 router
   .route('/gift')

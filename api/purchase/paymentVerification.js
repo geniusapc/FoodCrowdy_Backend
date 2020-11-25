@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const Invoice = require('../../models/CoopInvoice');
 const Products = require('../../models/CoopProducts');
 const Payment = require('../../models/CooperativePayment');
+const User = require('../../models/User');
 
 const sendMail = require('../../utils/email/paymentReceipt');
 
@@ -17,7 +18,6 @@ const reduceProductQuantity = async ({ paymentDetails, invoice }) => {
 
     const dbProducts = await Products.find({ _id: { $in: ids } }).select([
       'quantity',
-      'measurement',
     ]);
 
     const query = dbProducts.map((e) => {
@@ -42,22 +42,50 @@ const reduceProductQuantity = async ({ paymentDetails, invoice }) => {
 };
 
 module.exports = async (req, res, next) => {
-  const { orderRef } = req.body;
   const { cooperativeId } = req.user;
+  const { orderRef, type, amount, transactionPin } = req.body;
+
+  const payload = {
+    cooperativeId,
+    orderRef,
+    type,
+    amount,
+    transactionPin,
+    status: 'successful',
+    paymentRef: uuidv4(),
+  };
 
   const invoice = await Invoice.findOne({ orderRef }).lean();
 
   if (!invoice) throw new Error(`Order reference ${orderRef} not found`);
 
+  payload.userId = invoice.user.id; // attaching user to the payment
+
   const result = await Payment.findOne({ orderRef });
 
   if (result) throw new Error('Payment has been verified already');
 
-  const paymentDetails = await Payment.create({
-    ...req.body,
-    cooperativeId,
-    paymentRef: uuidv4(),
-  });
+  if (type === 'fcWallet') {
+    const user = await User.findById(invoice.user.id);
+    if (!user) return res.status(422).send({ message: 'User does not exist' });
+
+    if (!transactionPin)
+      return res.status(422).send({ message: 'transaction pin is required' });
+
+    const pinIsValid = await user.compareTransactionPin(transactionPin);
+
+    if (!pinIsValid)
+      return res.status(422).send({ message: 'Invalid transaction pin' });
+
+    if (user.walletBalance < amount)
+      return res.status(422).send({ message: 'Insufficient balance' });
+    const { walletBalance } = user;
+
+    user.walletBalance = walletBalance - amount;
+    await user.save();
+  }
+
+  const paymentDetails = await Payment.create(payload);
 
   await Invoice.updateOne({ orderRef }, { txIsValid: true });
 
