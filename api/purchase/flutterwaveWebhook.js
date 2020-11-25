@@ -41,8 +41,6 @@ const reduceProductQuantity = async ({ paymentDetails, invoice, code }) => {
 
 // payment gateway
 module.exports = async (req, res) => {
-  /* eslint no-console :"off" */
-  console.log(req.body);
   const hash = req.headers['verif-hash'];
   if (!hash || hash !== FLW_SECRET_HASH) return res.sendStatus(400);
 

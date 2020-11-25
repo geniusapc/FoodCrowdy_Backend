@@ -2,11 +2,13 @@ const NotFound = require('../middleware/notFound');
 const errorHandler = require('../middleware/errorHandler');
 
 const cooperative = require('../api');
+const flutterwaveWebhook = require('../api/purchase/flutterwaveWebhook');
 module.exports = (app) => {
   app.get('/', (req, res) => {
     return res.send('Welcome to foodCrowdy cooperative');
   });
 
+  app.post('/api/cooperative/purchase/flutter-payment', flutterwaveWebhook);
   app.use('/v1/cooperative', cooperative);
 
   app.use(NotFound);
