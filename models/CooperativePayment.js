@@ -3,6 +3,10 @@ const { Schema } = mongoose;
 
 const schema = new Schema(
   {
+    userId: {
+      type: String,
+      required: [true, 'userId is required'],
+    },
     orderRef: {
       type: String,
       required: [true, 'Payment order ref is required'],

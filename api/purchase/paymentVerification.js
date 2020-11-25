@@ -18,7 +18,6 @@ const reduceProductQuantity = async ({ paymentDetails, invoice }) => {
 
     const dbProducts = await Products.find({ _id: { $in: ids } }).select([
       'quantity',
-      'measurement',
     ]);
 
     const query = dbProducts.map((e) => {
@@ -60,6 +59,8 @@ module.exports = async (req, res, next) => {
 
   if (!invoice) throw new Error(`Order reference ${orderRef} not found`);
 
+  payload.userId = invoice.user.id; // attaching user to the payment
+
   const result = await Payment.findOne({ orderRef });
 
   if (result) throw new Error('Payment has been verified already');
@@ -72,7 +73,7 @@ module.exports = async (req, res, next) => {
       return res.status(422).send({ message: 'transaction pin is required' });
 
     const pinIsValid = await user.compareTransactionPin(transactionPin);
-    
+
     if (!pinIsValid)
       return res.status(422).send({ message: 'Invalid transaction pin' });
 

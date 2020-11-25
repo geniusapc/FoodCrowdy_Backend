@@ -12,6 +12,7 @@ const requiredSecretKeys = () => {
     'SENDGRID_API_KEY',
     'EBULKY_USER_NAME',
     'EBULKY_USER_NAME',
+    'FLW_SECRET_HASH',
   ];
 
   keys.map((key) => {
