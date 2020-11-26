@@ -15,6 +15,10 @@ const schema = new Schema({
     price: {
         type: Number,
     },
+
+    state: {
+        type: String,
+    },
     description: {
         type: String,
     },
