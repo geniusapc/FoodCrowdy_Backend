@@ -23,20 +23,20 @@ const getUserPurchase = require('./purchase/getUserPurchase');
 const flutterwaveWebhook = require('./purchase/flutterwaveWebhook');
 const paymentStatus = require('./purchase/paymentStatus');
 const {
-  auth,
-  adminPrevillege,
-  adminCheckCoopId,
+    auth,
+    adminPrevillege,
+    adminCheckCoopId,
 } = require('../middleware/auth');
 
 const {
-  valAddCoop,
-  valUploadCoopProduct,
-  valGetProduct,
-  valCheckout,
-  valPayment,
-  valEditCoopProduct,
-  valGetGift,
-  valAddGift,
+    valAddCoop,
+    valUploadCoopProduct,
+    valGetProduct,
+    valCheckout,
+    valPayment,
+    valEditCoopProduct,
+    valGetGift,
+    valAddGift,
 } = require('../middleware/validation/cooperative');
 
 // routes doesnt needs authentication
@@ -45,51 +45,51 @@ router.post('/purchase/flutter-payment', flutterwaveWebhook);
 router.use(auth);
 
 router
-  .route('/')
-  .get(adminPrevillege, getAllCooperative)
-  .post(adminPrevillege, upload.single('logo'), valAddCoop, addCoperatives);
+    .route('/')
+    .get(adminPrevillege, getAllCooperative)
+    .post(adminPrevillege, upload.single('logo'), valAddCoop, addCoperatives);
 
 router.post('/purchase/checkout', adminCheckCoopId, valCheckout, checkout);
 router.post(
-  '/purchase/payment-verification',
-  adminCheckCoopId,
-  valPayment,
-  paymentVerification
+    '/purchase/payment-verification',
+    adminCheckCoopId,
+    valPayment,
+    paymentVerification
 );
 router.get('/purchase', adminCheckCoopId, getUserPurchase);
 router.get('/purchase/payment/status', paymentStatus);
 
 router
-  .route('/gift')
-  .get(adminPrevillege, adminCheckCoopId, valGetGift, getGift)
-  .post(
-    adminPrevillege,
-    adminCheckCoopId,
-    upload.single('image'),
-    valAddGift,
-    addgift
-  );
+    .route('/gift')
+    .get(adminPrevillege, adminCheckCoopId, valGetGift, getGift)
+    .post(
+        adminPrevillege,
+        adminCheckCoopId,
+        upload.single('image'),
+        valAddGift,
+        addgift
+    );
 router
-  .route('/gift/claim')
-  .get(adminCheckCoopId, adminPrevillege, getClaimedGift)
-  .post(adminCheckCoopId, adminPrevillege, claimGift);
+    .route('/gift/claim')
+    .get(adminCheckCoopId, adminPrevillege, getClaimedGift)
+    .post(adminCheckCoopId, adminPrevillege, claimGift);
 
 router
-  .route('/products')
-  .get(valGetProduct, adminCheckCoopId, getAllCoopProduct)
-  .post(
-    adminPrevillege,
-    adminCheckCoopId,
-    upload.single('image'),
-    valUploadCoopProduct,
-    addCoopProduct
-  )
-  .patch(
-    adminPrevillege,
-    upload.single('image'),
-    valEditCoopProduct,
-    editCoopProduct
-  );
+    .route('/products')
+    .get(valGetProduct, adminCheckCoopId, getAllCoopProduct)
+    .post(
+        adminPrevillege,
+        adminCheckCoopId,
+        upload.single('image'),
+        valUploadCoopProduct,
+        addCoopProduct
+    )
+    .patch(
+        adminPrevillege,
+        upload.single('image'),
+        valEditCoopProduct,
+        editCoopProduct
+    );
 
 router.get('/products/:productId', adminCheckCoopId, getCoopProduct);
 
