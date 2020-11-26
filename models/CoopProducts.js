@@ -1,48 +1,45 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const schema = new Schema(
-  {
+const schema = new Schema({
     cooperativeId: {
-      type: mongoose.Types.ObjectId,
-      ref: 'Cooperative',
+        type: mongoose.Types.ObjectId,
+        ref: 'Cooperative',
     },
     title: {
-      type: String,
+        type: String,
     },
     category: {
-      type: String,
+        type: String,
     },
     price: {
-      type: Number,
+        type: Number,
     },
     description: {
-      type: String,
+        type: String,
     },
     image: {
-      type: String,
+        type: String,
     },
     unit: {
-      type: String,
+        type: String,
     },
     quantity: {
-      type: Number,
+        type: Number,
     },
     visibility: {
-      type: Number,
-      default: 0,
+        type: Number,
+        default: 1,
     },
     landingCost: {
-      type: Number,
+        type: Number,
     },
     baseProfit: {
-      type: Number,
+        type: Number,
     },
     coopPercentProfit: {
-      type: Number,
+        type: Number,
     },
-  },
-  { timestamps: true }
-);
+}, { timestamps: true });
 
 module.exports = mongoose.model('Cooperative_Product', schema);
