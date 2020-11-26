@@ -18,7 +18,7 @@ const productValidation = (mergedProductRequest) => {
 };
 
 module.exports = async (req, res, next) => {
-  const { products, delivery, user } = req.body; 
+  const { products, delivery, user } = req.body;
   const { cooperativeId } = req.user;
 
   const productIds = products.map((product) => product.id);
@@ -68,7 +68,7 @@ module.exports = async (req, res, next) => {
     })(),
   };
 
-  await Invoice.create({...invoicePayload, cooperativeId});
+  await Invoice.create({ ...invoicePayload, cooperativeId });
   const message = 'Invoice generated successfully';
   return response(res, next, 200, invoicePayload, message);
 };

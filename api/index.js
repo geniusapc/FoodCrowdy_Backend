@@ -21,6 +21,7 @@ const checkout = require('./purchase/checkout');
 const paymentVerification = require('./purchase/paymentVerification');
 const getUserPurchase = require('./purchase/getUserPurchase');
 const flutterwaveWebhook = require('./purchase/flutterwaveWebhook');
+const paymentStatus = require('./purchase/paymentStatus');
 const {
   auth,
   adminPrevillege,
@@ -56,6 +57,7 @@ router.post(
   paymentVerification
 );
 router.get('/purchase', adminCheckCoopId, getUserPurchase);
+router.get('/purchase/payment/status', paymentStatus);
 
 router
   .route('/gift')
