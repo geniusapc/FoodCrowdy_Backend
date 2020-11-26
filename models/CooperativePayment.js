@@ -15,6 +15,9 @@ const schema = new Schema(
       type: String,
       required: [true, 'Payment ref is required'],
     },
+    code: {
+      type: String,
+    },
     amount: {
       type: Number,
       required: [true, 'Payment amount is required'],
