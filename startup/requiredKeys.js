@@ -9,10 +9,13 @@ const requiredSecretKeys = () => {
     'CLOUDINARY_CLOUD_NAME',
     'CLOUDINARY_API_KEY',
     'CLOUDINARY_API_SECRET',
-    'SENDGRID_API_KEY',
+    'CLIENTNAME',
     'EBULKY_USER_NAME',
     'EBULKY_USER_NAME',
     'FLW_SECRET_HASH',
+    'MAIL_AUTH_USER',
+    'MAIL_AUTH_PASS',
+    'JWT_KEY',
   ];
 
   keys.map((key) => {
