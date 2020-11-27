@@ -28,6 +28,11 @@ const payload = (id) => {
       },
     },
     {
+      $match: {
+        'payment.status': 'successful',
+      },
+    },
+    {
       $unwind: {
         path: '$products',
       },
