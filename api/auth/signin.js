@@ -5,14 +5,17 @@ module.exports = async (req, res) => {
   const { email, password } = req.body;
 
   let validUser = await User.findOne({ email });
-  if (!validUser)
-    return res.status(422).send({ message: 'Invalid credentials' });
+  if (!validUser) throw new Error('Invalid credentials');
 
   const user = await validUser.comparePassword(password);
-  if (!user) return res.status(422).send({ message: 'Invalid credentials' });
+  if (!user) throw new Error('Invalid credentials');
 
   const token = await validUser.authToken();
   validUser = _.omit(validUser.toObject(), ['password']);
 
-  return res.header({ 'x-auth-token': token }).send(validUser);
+  return res.header({ 'x-auth-token': token }).send({
+    status: 'success',
+    message: 'login successful',
+    data: validUser,
+  });
 };

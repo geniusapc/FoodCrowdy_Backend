@@ -1,9 +1,9 @@
+const _ = require('lodash');
 const User = require('../../models/User');
 const UnregisteredCoopMember = require('../../models/UnregisteredCoopMember');
 const Cache = require('../../models/Cache');
-const { response } = require('../../utils/response');
 
-module.exports = async (req, res, next) => {
+module.exports = async (req, res) => {
   const { password, phoneNumber, token, transactionPin } = req.body;
 
   const result = await Cache.findOne({ emailToken: token });
@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
     uniqueId = `FCUSR${uniqueIdNumber + 1}`;
   }
 
-  await User.create({
+  let newUser = await User.create({
     password,
     phoneNumber,
     transactionPin,
@@ -40,5 +40,13 @@ module.exports = async (req, res, next) => {
 
   await Cache.deleteOne({ emailToken: token });
   await UnregisteredCoopMember.findByIdAndDelete(result.userId);
-  return response(res, next, 200, null);
+
+  const jwtToken = await newUser.authToken();
+  newUser = _.omit(newUser.toObject(), ['password']);
+
+  return res.header({ 'x-auth-token': jwtToken }).send({
+    status: 'success',
+    message: 'login successful',
+    data: newUser,
+  });
 };
