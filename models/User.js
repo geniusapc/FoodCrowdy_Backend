@@ -98,7 +98,7 @@ schema.methods.authToken = async function () {
 
 schema.methods.compareTransactionPin = async function (pin) {
   const user = this;
-  const result = await bcrypt.compare(pin, user.transactionPin);
+  const result = await bcrypt.compare(pin.toString(), user.transactionPin);
   return result;
 };
 schema.methods.comparePassword = async function (candidatePassword) {
