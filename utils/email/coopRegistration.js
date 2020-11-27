@@ -5,7 +5,7 @@ const sendRegMail = async (user, id) => {
   const logo =
     'https://res.cloudinary.com/cmcwebcode/image/upload/v1596211234/foodcrowdy/LOGO_FOODCROWDY_pa3ciy.png';
   let verificationLink = `${CLIENTNAME}/users/reset-password?token=${id}`;
-  const coopId = user.cooperative.length ? user.cooperative[0] : null;
+  const coopId = user.cooperativeId ? user.cooperativeId : null;
 
   if (coopId) {
     verificationLink = `${verificationLink}&coopId=${coopId}`;

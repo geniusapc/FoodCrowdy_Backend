@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const User = require('../../models/User');
+const User = require('../../models/UnregisteredCoopMember');
 const sendVerificationMail = require('../../utils/email/coopRegistration');
 const Cache = require('../../models/Cache');
 
