@@ -30,6 +30,12 @@ const schema = new Schema(
       type: Boolean,
       default: false,
     },
+    roles: [],
+    accountStatus: {
+      type: String,
+      enum: ['active', 'suspended'],
+      default: 'active',
+    },
     permission: {
       type: String,
       default: 'user',

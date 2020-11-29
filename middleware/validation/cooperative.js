@@ -57,10 +57,11 @@ module.exports.valEditCoopProduct = (req, res, next) => {
 
   if (error) throw error;
   Object.keys(value).forEach((key) => !value[key] && delete value[key]);
+  if (!Object.keys(value).length)
+    throw new Error('you must specify atleast one field');
   req.body = value;
   next();
 };
-
 
 module.exports.valCheckout = (req, res, next) => {
   const { error, value } = Joi.object()
@@ -96,3 +97,20 @@ module.exports.valCheckout = (req, res, next) => {
   next();
 };
 
+//  USERS
+module.exports.valEditUser = (req, res, next) => {
+  const { error, value } = Joi.object()
+    .keys({
+      walletBalance: Joi.number(),
+      accountStatus: Joi.string().valid('active', 'suspended'),
+    })
+    .validate(req.body);
+
+  if (error) throw error;
+  Object.keys(value).forEach((key) => !value[key] && delete value[key]);
+  if (!Object.keys(value).length)
+    throw new Error('you must specify atleast one field');
+
+  req.body = value;
+  next();
+};

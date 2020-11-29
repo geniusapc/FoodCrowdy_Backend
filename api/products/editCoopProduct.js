@@ -5,7 +5,6 @@ const { response } = require('../../utils/response');
 
 module.exports = async (req, res, next) => {
   const { productId } = req.params;
-  console.log(req.body);
   const product = await CoopProducts.findOne({ _id: productId }).select([
     'image',
   ]);

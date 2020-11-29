@@ -12,60 +12,67 @@ const addCoopProduct = require('./products/addCoopProduct');
 const editCoopProduct = require('./products/editCoopProduct');
 const deleteCoopProduct = require('./products/deleteCoopProduct');
 
+// PURCHASE
 const myOrders = require('./purchase/myPurchase');
 const getAllOrders = require('./purchase/getAllOrders');
 const checkout = require('./purchase/checkout');
+const paymentStatus = require('./purchase/paymentStatus');
+const paymentVerification = require('./purchase/paymentVerification');
+
+// USERS
+const registeredCoopMember = require('./users/registeredCoopMember');
+const unRegisteredCoopMembers = require('./users/unRegisteredCoopMembers');
+const editUser = require('./users/editUser');
 
 const {
   valParamOId,
   valUploadCoopProduct,
   valEditCoopProduct,
   valCheckout,
+  valEditUser,
 } = require('../middleware/validation/cooperative');
 
-const { loginAuth } = require('../middleware/auth');
-
-router.use((req, res, next) => {
-  req.user = { id: '5f292f63943ede289e04c75e' };
-  next();
-});
+const { loginAuth, checkRole } = require('../middleware/auth');
 
 // PRODUCTS
 router
   .route('/product/:productId')
-  .all(valParamOId('productId'))
+  .all(loginAuth, valParamOId('productId'))
   .get(getCoopProduct)
-  .delete(loginAuth, deleteCoopProduct)
+  .delete(checkRole('super'), loginAuth, deleteCoopProduct)
   .patch(
-    loginAuth,
+    checkRole('super', 'product'),
     upload.single('image'),
     valEditCoopProduct,
     editCoopProduct
   );
-
 router
   .route('/products/cooperative/:cooperativeId')
   .all(loginAuth, valParamOId('cooperativeId'))
   .get(getAllCoopProduct)
   .post(
     loginAuth,
+    checkRole('super', 'product'),
     upload.single('image'),
     valUploadCoopProduct,
     addCoopProduct
   );
 
 //  PURCHASE
-router.get('/purchase/my-orders', myOrders); // must be logged in
-router.get('/purchase', getAllOrders); // admin and coop_admin
-router.post('/purchase/checkout', valCheckout, checkout); // any
+router.get('/purchase/my-orders', loginAuth, myOrders);
+router.get(
+  '/purchase',
+  loginAuth,
+  checkRole('admin', 'coop_admin'),
+  getAllOrders
+);
+router.post('/purchase/checkout', loginAuth, valCheckout, checkout);
+router.get('/purchase/payment/status', loginAuth, paymentStatus);
+router.post('/purchase/payment-verification', loginAuth, paymentVerification);
 
-//  router.post(
-//   '/purchase/payment-verification',
-//   adminCheckCoopId,
-//   valPayment,
-//   paymentVerification
-// );
-
-// router.get('/purchase/payment/status', paymentStatus);
+// Users
+router.get('/users/registered-coop-members', registeredCoopMember);
+router.get('/users/unregistered-coop-members', unRegisteredCoopMembers);
+router.patch('/user/:userId', valEditUser, editUser);
 
 module.exports = router;
