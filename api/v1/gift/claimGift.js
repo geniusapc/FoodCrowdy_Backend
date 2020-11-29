@@ -1,6 +1,6 @@
-const ClaimedCooperativeGift = require('../../models/ClaimedCooperativeGift');
-const CooperativeGift = require('../../models/CooperativeGift');
-const { response } = require('../../utils/response');
+const ClaimedCooperativeGift = require('../../../models/ClaimedCooperativeGift');
+const CooperativeGift = require('../../../models/CooperativeGift');
+const { response } = require('../../../utils/response');
 // const sendMail = require('../../utils/email/coopClaimGift');
 
 const generateCode = () => Math.floor(1000 + Math.random() * 9000);

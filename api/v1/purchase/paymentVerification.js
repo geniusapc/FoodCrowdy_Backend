@@ -1,14 +1,14 @@
 /* eslint eqeqeq:"off", func-names:"off" */
 const { v4: uuidv4 } = require('uuid');
-const Invoice = require('../../models/CoopInvoice');
-const Products = require('../../models/CoopProducts');
-const Payment = require('../../models/CooperativePayment');
-const User = require('../../models/User');
+const Invoice = require('../../../models/CoopInvoice');
+const Products = require('../../../models/CoopProducts');
+const Payment = require('../../../models/CooperativePayment');
+const User = require('../../../models/User');
 
-const sendMail = require('../../utils/email/paymentReceipt');
+const sendMail = require('../../../utils/email/paymentReceipt');
 
-const { purchaseAlert } = require('../../utils/sms/purchaseAlert');
-const { response } = require('../../utils/response');
+const { purchaseAlert } = require('../../../utils/sms/purchaseAlert');
+const { response } = require('../../../utils/response');
 
 const reduceProductQuantity = async ({ paymentDetails, invoice }) => {
   if (paymentDetails && paymentDetails.status === 'successful') {

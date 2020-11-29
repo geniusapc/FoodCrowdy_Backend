@@ -1,7 +1,7 @@
-const cloudinary = require('../../config/cloudinary');
-const CooperativeGift = require('../../models/CooperativeGift');
-const { getPublicId } = require('../../utils/image');
-const { response } = require('../../utils/response');
+const cloudinary = require('../../../config/cloudinary');
+const CooperativeGift = require('../../../models/CooperativeGift');
+const { getPublicId } = require('../../../utils/image');
+const { response } = require('../../../utils/response');
 
 module.exports = async (req, res, next) => {
   const { cooperativeId } = req.user;

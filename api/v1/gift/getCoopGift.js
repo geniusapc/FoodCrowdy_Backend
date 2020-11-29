@@ -1,5 +1,5 @@
-const CooperativeGift = require('../../models/CooperativeGift');
-const { response } = require('../../utils/response');
+const CooperativeGift = require('../../../models/CooperativeGift');
+const { response } = require('../../../utils/response');
 
 module.exports = async (req, res, next) => {
   const condition = { cooperativeId: req.user.cooperativeId };

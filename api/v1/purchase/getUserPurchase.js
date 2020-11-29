@@ -1,7 +1,7 @@
 /* eslint eqeqeq:"off", func-names:"off" */
-const Invoice = require('../../models/CoopInvoice');
+const Invoice = require('../../../models/CoopInvoice');
 
-const { response } = require('../../utils/response');
+const { response } = require('../../../utils/response');
 
 const payload = (id) => {
   const condition = { txIsValid: true };
@@ -25,11 +25,6 @@ const payload = (id) => {
     {
       $unwind: {
         path: '$payment',
-      },
-    },
-    {
-      $match: {
-        'payment.status': 'successful',
       },
     },
     {

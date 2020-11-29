@@ -1,6 +1,6 @@
-const Invoice = require('../../models/CoopInvoice');
-const CoopProducts = require('../../models/CoopProducts');
-const { response } = require('../../utils/response');
+const Invoice = require('../../../models/CoopInvoice');
+const CoopProducts = require('../../../models/CoopProducts');
+const { response } = require('../../../utils/response');
 
 const generateUniqueNumber = () =>
   Math.random().toString(36).substring(2).toUpperCase();

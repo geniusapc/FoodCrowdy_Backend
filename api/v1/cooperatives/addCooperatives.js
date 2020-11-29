@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
-const cloudinary = require('../../config/cloudinary');
-const Cooperative = require('../../models/Cooperative');
-const { response } = require('../../utils/response');
+const cloudinary = require('../../../config/cloudinary');
+const Cooperative = require('../../../models/Cooperative');
+const { response } = require('../../../utils/response');
 
 module.exports = async (req, res, next) => {
   if (!req.file) throw new Error('Image is required');

@@ -1,6 +1,6 @@
 /* eslint consistent-return:off */
-const Cooperative = require('../models/Cooperative');
-const { errorResponse } = require('../utils/response');
+const Cooperative = require('../../models/Cooperative');
+const { errorResponse } = require('../../utils/response');
 
 module.exports.auth = async (req, res, next) => {
   const { api_key: apiKey } = req.query;

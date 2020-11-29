@@ -1,4 +1,4 @@
-const ClaimedCooperateGift = require('../../models/ClaimedCooperativeGift');
+const ClaimedCooperateGift = require('../../../models/ClaimedCooperativeGift');
 
 module.exports = async (req, res) => {
   const { cooperativeId } = req.user;

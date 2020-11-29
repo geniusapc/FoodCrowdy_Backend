@@ -1,12 +1,12 @@
 /* eslint eqeqeq:"off", func-names:"off" */
-const Payment = require('../../models/CooperativePayment');
-const Product = require('../../models/CoopProducts');
-const CoopInvoice = require('../../models/CoopInvoice');
-const sendMail = require('../../utils/email/paymentReceipt');
+const Payment = require('../../../models/CooperativePayment');
+const Product = require('../../../models/CoopProducts');
+const CoopInvoice = require('../../../models/CoopInvoice');
+const sendMail = require('../../../utils/email/paymentReceipt');
 
-const { FLW_SECRET_HASH } = require('../../config/keys');
-const { purchaseAlert } = require('../../utils/sms/purchaseAlert');
-const { genRandNum } = require('../../utils/randomCode/randomCode');
+const { FLW_SECRET_HASH } = require('../../../config/keys');
+const { purchaseAlert } = require('../../../utils/sms/purchaseAlert');
+const { genRandNum } = require('../../../utils/randomCode/randomCode');
 
 const reduceProductQuantity = async ({ paymentDetails, invoice, code }) => {
   if (paymentDetails.status === 'successful') {

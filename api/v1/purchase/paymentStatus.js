@@ -1,5 +1,5 @@
-const Payment = require('../../models/CooperativePayment');
-const { response } = require('../../utils/response');
+const Payment = require('../../../models/CooperativePayment');
+const { response } = require('../../../utils/response');
 
 module.exports = async (req, res, next) => {
   const paymentStatus = await Payment.findOne({
