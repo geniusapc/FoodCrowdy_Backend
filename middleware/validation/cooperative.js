@@ -60,3 +60,39 @@ module.exports.valEditCoopProduct = (req, res, next) => {
   req.body = value;
   next();
 };
+
+
+module.exports.valCheckout = (req, res, next) => {
+  const { error, value } = Joi.object()
+    .keys({
+      user: Joi.object().keys({
+        id: Joi.string().trim().required(),
+        name: Joi.string().trim().required(),
+        email: Joi.string().trim().required(),
+        phoneNumber: Joi.string().trim().required(),
+      }),
+
+      products: Joi.array()
+        .items(
+          Joi.object({
+            id: Joi.objectId().required(),
+            qty: Joi.number().integer().min(1).required(),
+          })
+        )
+        .required(),
+
+      delivery: Joi.object().keys({
+        type: Joi.string().valid('pickup', 'door delivery').required(),
+        price: Joi.number().required(),
+        address: Joi.string().trim().required(),
+        state: Joi.string().trim().required(),
+      }),
+    })
+    .validate(req.body);
+
+  if (error) throw error;
+
+  req.body = value;
+  next();
+};
+

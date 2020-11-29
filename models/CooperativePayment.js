@@ -11,6 +11,16 @@ const schema = new Schema(
       type: String,
       required: [true, 'Payment order ref is required'],
     },
+    invoice: {
+      type: mongoose.Types.ObjectId,
+      required: [true, 'Invoice id is required'],
+      ref: 'Coop_Invoice',
+    },
+    cooperative: {
+      type: mongoose.Types.ObjectId,
+      required: [true, 'cooperative Id ref is required'],
+      ref: 'Cooperative',
+    },
     paymentRef: {
       type: String,
       required: [true, 'Payment ref is required'],
@@ -34,8 +44,8 @@ const schema = new Schema(
     },
     paymentType: {
       type: String,
-      lowercase: true,
-      default: 'cooperative',
+      enum: ['fcWallet', "coopWallet", "flutterwave"],
+      required: [true, 'Payment type is required'],
     },
   },
   { timestamps: true }

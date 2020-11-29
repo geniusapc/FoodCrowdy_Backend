@@ -1,14 +1,14 @@
 const { v4: uuidv4 } = require('uuid');
-const Invoice = require('../../../models/CoopInvoice');
-const Payment = require('../../../models/CooperativePayment');
-const User = require('../../../models/User');
+const Invoice = require('../../models/CoopInvoice');
+const Payment = require('../../models/CooperativePayment');
+const User = require('../../models/User');
 
-const sendMail = require('../../../utils/email/paymentReceipt');
+const sendMail = require('../../utils/email/paymentReceipt');
 
-const { purchaseAlert } = require('../../../utils/sms/purchaseAlert');
-const { response } = require('../../../utils/response');
-const reduceProductQuantity = require('../../../utils/product/reduceProductQuantity');
-const { genRandNum } = require('../../../utils/randomCode/randomCode');
+const { purchaseAlert } = require('../../utils/sms/purchaseAlert');
+const { response } = require('../../utils/response');
+const reduceProductQuantity = require('../../utils/product/reduceProductQuantity');
+const { genRandNum } = require('../../utils/randomCode/randomCode');
 
 module.exports = async (req, res, next) => {
   const { cooperativeId } = req.user;

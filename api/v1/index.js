@@ -17,10 +17,10 @@ const getCoopProduct = require('./products/getCoopProduct');
 const addCoopProduct = require('./products/addCoopProduct');
 const editCoopProduct = require('./products/editCoopProduct');
 
-const checkout = require('./purchase/checkout');
-const paymentVerification = require('./purchase/paymentVerification');
+const checkout = require('../purchase/checkout');
+const paymentVerification = require('../purchase/paymentVerification');
 const getUserPurchase = require('./purchase/getUserPurchase');
-const flutterwaveWebhook = require('./purchase/flutterwaveWebhook');
+
 const paymentStatus = require('./purchase/paymentStatus');
 const {
   auth,
@@ -38,9 +38,6 @@ const {
   valGetGift,
   valAddGift,
 } = require('../../middleware/v1/validation/cooperative');
-
-// routes doesnt needs authentication
-router.post('/purchase/flutter-payment', flutterwaveWebhook);
 
 router.use(auth);
 
