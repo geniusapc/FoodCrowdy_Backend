@@ -24,7 +24,7 @@ const schema = new Schema(
       trim: true,
     },
     cooperativeId: {
-      type: String,
+      type: mongoose.Types.ObjectId,
     },
     isVerified: {
       type: Boolean,
