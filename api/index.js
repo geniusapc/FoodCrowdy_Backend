@@ -19,6 +19,12 @@ const checkout = require('./purchase/checkout');
 const paymentStatus = require('./purchase/paymentStatus');
 const paymentVerification = require('./purchase/paymentVerification');
 
+const ADMIN = 'admin';
+const COOPERATIVE = 'cooperative';
+const SUPER = 'super';
+const PRODUCT = 'product';
+const COOPADMIN = 'coop_admin';
+
 // USERS
 const registeredCoopMember = require('./users/registeredCoopMember');
 const unRegisteredCoopMembers = require('./users/unRegisteredCoopMembers');
@@ -29,19 +35,26 @@ const {
   valUploadCoopProduct,
   valEditCoopProduct,
   valCheckout,
+  valPayment,
   valEditUser,
 } = require('../middleware/validation/cooperative');
 
-const { loginAuth, checkRole } = require('../middleware/auth');
+const { loginAuth, checkRole, checkPermission } = require('../middleware/auth');
 
 // PRODUCTS
 router
   .route('/product/:productId')
   .all(loginAuth, valParamOId('productId'))
   .get(getCoopProduct)
-  .delete(checkRole('super'), loginAuth, deleteCoopProduct)
+  .delete(
+    checkPermission(ADMIN),
+    checkRole(SUPER),
+    loginAuth,
+    deleteCoopProduct
+  )
   .patch(
-    checkRole('super', 'product'),
+    checkPermission(ADMIN),
+    checkRole(SUPER, PRODUCT),
     upload.single('image'),
     valEditCoopProduct,
     editCoopProduct
@@ -52,7 +65,8 @@ router
   .get(getAllCoopProduct)
   .post(
     loginAuth,
-    checkRole('super', 'product'),
+    checkPermission(ADMIN),
+    checkRole(SUPER, PRODUCT),
     upload.single('image'),
     valUploadCoopProduct,
     addCoopProduct
@@ -63,12 +77,18 @@ router.get('/purchase/my-orders', loginAuth, myOrders);
 router.get(
   '/purchase',
   loginAuth,
-  checkRole('admin', 'coop_admin'),
+  checkPermission(ADMIN, COOPERATIVE),
+  checkRole(SUPER, COOPADMIN),
   getAllOrders
 );
 router.post('/purchase/checkout', loginAuth, valCheckout, checkout);
-router.get('/purchase/payment/status', loginAuth, paymentStatus);
-router.post('/purchase/payment-verification', loginAuth, paymentVerification);
+router.get('/purchase/payment-status/:orderRef', loginAuth, paymentStatus);
+router.post(
+  '/purchase/payment-verification',
+  loginAuth,
+  valPayment,
+  paymentVerification
+);
 
 // Users
 router.get('/users/registered-coop-members', registeredCoopMember);

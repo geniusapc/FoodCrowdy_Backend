@@ -5,7 +5,11 @@ module.exports = async (req, res, next) => {
   const { permission, cooperativeId } = req.user;
   // const filter = [];
 
-  let condition = { cooperativeId, paymentType: { $ne: 'flutterwave' } }; // coop admin see all payment that is not flutter payment
+  let condition = {
+    cooperative: cooperativeId,
+    paymentType: { $ne: 'flutterwave' },
+  }; // coop admin see all payment that is not flutter payment
+
   if (permission === 'admin') condition = {};
 
   const invoice = await Payment.find(condition).populate('invoice');

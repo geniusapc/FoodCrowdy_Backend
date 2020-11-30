@@ -81,7 +81,7 @@ module.exports.valCheckout = (req, res, next) => {
   const { error, value } = Joi.object()
     .keys({
       user: Joi.object().keys({
-        id: Joi.string().trim().required(),
+        id: Joi.objectId().trim().required(),
         name: Joi.string().trim().required(),
         email: Joi.string().trim().required(),
         phoneNumber: Joi.string().trim().required(),
@@ -118,7 +118,7 @@ module.exports.valPayment = (req, res, next) => {
       amount: Joi.number().required(),
       status: Joi.string().valid('successful').trim(),
       transactionPin: Joi.number().min(4).required(),
-      type: Joi.string().trim().valid('fcWallet', 'coopWallet').required(),
+      paymentType: Joi.string().trim().valid('fcWallet', 'coopWallet').required(),
     })
     .validate(req.body);
 

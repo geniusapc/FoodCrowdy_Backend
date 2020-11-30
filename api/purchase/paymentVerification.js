@@ -12,7 +12,7 @@ const { genRandNum } = require('../../utils/randomCode/randomCode');
 
 module.exports = async (req, res, next) => {
   const { cooperativeId } = req.user;
-  const { orderRef, type, amount, transactionPin } = req.body;
+  const { orderRef, paymentType, amount, transactionPin } = req.body;
 
   const code = genRandNum(4);
 
@@ -24,9 +24,9 @@ module.exports = async (req, res, next) => {
 
   const payload = {
     code,
-    cooperativeId,
+    cooperative: cooperativeId,
     orderRef,
-    type,
+    paymentType,
     amount,
     transactionPin,
     status: 'successful',
@@ -35,7 +35,8 @@ module.exports = async (req, res, next) => {
     invoice: invoice._id,
   };
 
-  if (type === 'fcWallet') {
+  if (paymentType === 'fcWallet') {
+    if (!transactionPin) throw new Error('Transaction Pin required');
     const user = await User.findById(invoice.user.id);
     if (!user) return res.status(422).send({ message: 'User does not exist' });
 

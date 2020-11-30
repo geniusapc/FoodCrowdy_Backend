@@ -41,6 +41,23 @@ module.exports.loginAuth = async (req, res, next) => {
   next();
 };
 
+module.exports.checkPermission = (...permission) => {
+  return async (req, res, next) => {
+    const valid = permission.includes(req.user.permission);
+    const error = new Error();
+
+    if (!valid) {
+      error.status = 403;
+      error.message =
+        'Access denied. you dont have permission to perform this action';
+      error.type = 'FORBIDDEN';
+      throw error;
+    }
+
+    next();
+  };
+};
+
 module.exports.checkRole = (...role) => {
   return async (req, res, next) => {
     const valid = ['super', ...role].some((r) => req.user.roles.includes(r));
