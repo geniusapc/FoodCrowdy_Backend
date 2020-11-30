@@ -144,7 +144,7 @@ module.exports.valClaimGift = (req, res, next) => {
   const { error, value } = Joi.object()
     .keys({
       user: Joi.object().keys({
-        id: Joi.string().trim().required(),
+        id: Joi.objectId().trim().required(),
         name: Joi.string().trim().required(),
         email: Joi.string().trim().lowercase().required(),
         phoneNumber: Joi.number().required(),

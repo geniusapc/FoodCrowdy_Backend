@@ -64,4 +64,4 @@ const schema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Claim_Cooperative_Gift', schema);
+module.exports = mongoose.model('Claimed_Cooperative_Gift', schema);
