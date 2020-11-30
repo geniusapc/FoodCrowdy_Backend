@@ -91,8 +91,27 @@ router.post(
 );
 
 // Users
-router.get('/users/registered-coop-members', registeredCoopMember);
-router.get('/users/unregistered-coop-members', unRegisteredCoopMembers);
-router.patch('/user/:userId', valEditUser, editUser);
+router.get(
+  '/users/registered-coop-members',
+  loginAuth,
+  checkPermission(ADMIN, COOPERATIVE),
+  checkRole(SUPER, COOPADMIN),
+  registeredCoopMember
+);
+router.get(
+  '/users/unregistered-coop-members',
+  loginAuth,
+  checkPermission(ADMIN, COOPERATIVE),
+  checkRole(SUPER, COOPADMIN),
+  unRegisteredCoopMembers
+);
+router.patch(
+  '/user/:userId',
+  loginAuth,
+  checkPermission(ADMIN),
+  checkRole(SUPER),
+  valEditUser,
+  editUser
+);
 
 module.exports = router;
