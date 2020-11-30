@@ -19,6 +19,13 @@ module.exports = async (req, res, next) => {
       'Gift does not exist or you do not have permission to claim this gift'
     );
 
+  const claimedGift = await ClaimedCooperativeGift.find({
+    'user.id': user.id,
+    tagName,
+  });
+
+  if (claimedGift) throw new Error('You have already claimed this gift');
+
   const code = generateCode();
 
   await ClaimedCooperativeGift.create({
