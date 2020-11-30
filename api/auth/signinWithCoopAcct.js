@@ -34,6 +34,6 @@ module.exports = async (req, res) => {
   return res.header({ 'x-auth-token': jwtToken }).send({
     status: 'success',
     message: 'Registration successful',
-    data: user,
+    data: newUser,
   });
 };
