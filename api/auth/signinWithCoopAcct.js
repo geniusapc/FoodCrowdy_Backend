@@ -4,7 +4,7 @@ const User = require('../../models/User');
 const generateUniqueId = require('../../utils/randomCode/userUniqueCode');
 
 module.exports = async (req, res) => {
-  const { name, email, cooperativeId } = req.body;
+  const { name, email, phoneNumber, cooperativeId } = req.body;
 
   const user = await User.findOne({ email });
 
@@ -22,6 +22,7 @@ module.exports = async (req, res) => {
   let newUser = await User.create({
     name,
     email,
+    phoneNumber,
     cooperativeId,
     isVerified: true,
     password: uuidv4(),
