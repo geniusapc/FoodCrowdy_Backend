@@ -108,8 +108,8 @@ router.get(
 router.patch(
   '/user/:userId',
   loginAuth,
-  checkPermission(ADMIN),
-  checkRole(SUPER),
+  checkPermission(ADMIN, COOPERATIVE),
+  checkRole(SUPER, COOPADMIN),
   valEditUser,
   editUser
 );
