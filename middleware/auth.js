@@ -1,33 +1,76 @@
-/* eslint consistent-return:off */
-const Cooperative = require('../models/Cooperative');
-const { errorResponse } = require('../utils/response');
+const jwt = require('jsonwebtoken');
+const { JWT_KEY } = require('../config/keys');
 
-module.exports.auth = async (req, res, next) => {
-  const { api_key: apiKey } = req.query;
-  if (!apiKey) return errorResponse(res, 400, 'You must provide an api_key');
-  const cooperative = await Cooperative.findOne({ apiKey }).lean();
-  if (!cooperative) return errorResponse(res, 401, 'Invalid api_key');
+const User = require('../models/User');
 
-  req.user = {
-    cooperativeId: cooperative._id,
-    permission: cooperative.permission,
-  };
+/* eslint consistent-return: "off" */
+module.exports.loginAuth = async (req, res, next) => {
+  const token = req.header('x-auth-token');
+  const error = new Error();
 
-  next();
-};
+  if (!token) {
+    error.status = 400;
+    error.message = 'Access denied. no token provided';
+    error.type = 'NO_TOKEN';
+    throw error;
+  }
 
-module.exports.adminPrevillege = async (req, res, next) => {
-  const message = 'You dont have permission to perform this action';
-  if (req.user.permission !== 'admin') return errorResponse(res, 403, message);
-  next();
-};
-module.exports.adminCheckCoopId = async (req, res, next) => {
-  if (req.user.permission === 'admin') {
-    const { cooperativeId } = req.query;
-    if (!cooperativeId)
-      return errorResponse(res, 422, 'You must provide a cooperativeId');
+  try {
+    const decoded = jwt.verify(token, JWT_KEY);
 
-    req.user.cooperativeId = cooperativeId;
+    const user = await User.findById(decoded._id).select([
+      'roles',
+      'cooperativeId',
+      'permission',
+    ]);
+
+    if (!user) {
+      error.status = 403;
+      error.message = 'Account does not exist';
+      error.type = 'INVALID_ACCOUNT';
+      throw error;
+    }
+
+    req.user = user;
+  } catch (e) {
+    error.status = 401;
+    error.message = 'Invalid token';
+    error.type = 'INVALID_TOKEN';
+    throw error;
   }
   next();
+};
+
+module.exports.checkPermission = (...permission) => {
+  return async (req, res, next) => {
+    const valid = permission.includes(req.user.permission);
+    const error = new Error();
+
+    if (!valid) {
+      error.status = 403;
+      error.message =
+        'Access denied. you dont have permission to perform this action';
+      error.type = 'FORBIDDEN';
+      throw error;
+    }
+
+    next();
+  };
+};
+
+module.exports.checkRole = (...role) => {
+  return async (req, res, next) => {
+    const valid = ['super', ...role].some((r) => req.user.roles.includes(r));
+    const error = new Error();
+
+    if (!valid) {
+      error.status = 403;
+      error.message =
+        'Access denied. you dont have permission to perform this action';
+      error.type = 'FORBIDDEN';
+      throw error;
+    }
+
+    next();
+  };
 };

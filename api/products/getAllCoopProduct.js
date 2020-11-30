@@ -2,27 +2,27 @@ const CoopProducts = require('../../models/CoopProducts');
 const { response } = require('../../utils/response');
 
 module.exports = async (req, res, next) => {
-  const { cooperativeId, permission } = req.user;
+  const { permission } = req.user;
+  const { cooperativeId } = req.params;
 
-  let filter = [];
-  let condition = {};
+  let filter = ['-__v', '-updatedAt'];
+  const condition = { cooperativeId };
 
-  if (permission === 'admin') {
-    condition.visibility = req.query.visibility;
-    condition.cooperativeId = req.query.cooperativeId;
-    filter = [];
-  } else {
-    condition = { visibility: 1, cooperativeId };
+  if (req.query.visibility) condition.visibility = req.query.visibility;
+
+  if (permission !== 'admin') {
     filter = [
       '-cooperativeId',
       '-landingCost',
       '-baseProfit',
       '-coopPercentProfit',
       '-visibility',
+      ...filter,
     ];
   }
+
   const products = await CoopProducts.find(condition)
     .sort({ createdAt: -1 })
-    .select(['-__v', '-updatedAt', ...filter]);
+    .select(filter);
   return response(res, next, 200, products);
 };

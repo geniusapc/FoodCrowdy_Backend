@@ -8,7 +8,13 @@ const compression = require('compression');
 module.exports = (app) => {
   app.use(helmet());
   app.use(compression());
-  app.use(cors({ origin: '*' }));
+  app.use(
+    cors({
+      origin: '*',
+      exposedHeaders: ['x-auth-token', 'Content-Length', 'Content-Type'],
+      allowedHeaders: ['x-auth-token', 'Content-Length', 'Content-Type'],
+    })
+  );
 
   app.use(
     expressWinston.logger({

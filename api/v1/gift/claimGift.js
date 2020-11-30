@@ -1,12 +1,12 @@
-const ClaimedCooperativeGift = require('../../models/ClaimedCooperativeGift');
-const CooperativeGift = require('../../models/CooperativeGift');
-const { response } = require('../../utils/response');
-// const sendMail = require('../../utils/email/coopClaimGift');
+const ClaimedCooperativeGift = require('../../../models/ClaimedCooperativeGift');
+const CooperativeGift = require('../../../models/CooperativeGift');
+const { response } = require('../../../utils/response');
+const sendMail = require('../../../utils/email/coopClaimGift');
 
 const generateCode = () => Math.floor(1000 + Math.random() * 9000);
 
 module.exports = async (req, res, next) => {
-  const { tagName } = req.body;
+  const { tagName, user } = req.body;
   const { cooperativeId } = req.user;
 
   const gift = await CooperativeGift.find({
@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
     ...req.body,
   });
 
-  // await sendMail({ user, code });
+  await sendMail({ user, code });
 
   const message = 'Gift claimed successfully';
   return response(res, next, 200, null, message);

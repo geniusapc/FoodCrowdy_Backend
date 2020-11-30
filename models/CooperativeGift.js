@@ -30,7 +30,7 @@ const schema = new Schema(
     visibility: {
       type: Number,
       enum: [0, 1],
-      default: 0,
+      default: 1,
     },
   },
   { timestamps: true }

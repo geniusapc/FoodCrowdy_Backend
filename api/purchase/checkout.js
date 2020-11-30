@@ -54,6 +54,7 @@ module.exports = async (req, res, next) => {
     qty: e.qty,
     price: e.price,
     id: e.id,
+    title: e.title,
   }));
 
   // payment  invoice

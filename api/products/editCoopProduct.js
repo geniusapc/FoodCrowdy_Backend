@@ -4,16 +4,15 @@ const { getPublicId } = require('../../utils/image');
 const { response } = require('../../utils/response');
 
 module.exports = async (req, res, next) => {
-  const { cooperativeId } = req.user;
-  const prod = await CoopProducts.findOne({
-    cooperativeId,
-    _id: req.body.id,
-  }).select(['image']);
+  const { productId } = req.params;
+  const product = await CoopProducts.findOne({ _id: productId }).select([
+    'image',
+  ]);
 
-  if (!prod) throw new Error('Invalid cooperative product');
+  if (!product) throw new Error('Invalid cooperative product');
 
-  if (req.file) {
-    const publicId = getPublicId(prod.image);
+  if (req.file && product.image) {
+    const publicId = getPublicId(product.image);
 
     const { secure_url: image } = await cloudinary.v2.uploader
       .upload(req.file.path, { public_id: publicId })
@@ -23,7 +22,7 @@ module.exports = async (req, res, next) => {
     req.body.image = image;
   }
 
-  await CoopProducts.updateOne({ _id: req.body.id }, { ...req.body });
+  await CoopProducts.updateOne({ _id: productId }, { ...req.body });
   const message = 'Product edited successfully';
   return response(res, next, 200, null, message);
 };

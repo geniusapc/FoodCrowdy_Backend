@@ -1,5 +1,5 @@
-const Cooperative = require('../../models/Cooperative');
-const { response } = require('../../utils/response');
+const Cooperative = require('../../../models/Cooperative');
+const { response } = require('../../../utils/response');
 
 module.exports = async (req, res, next) => {
   const cooperatives = await Cooperative.find({})

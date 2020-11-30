@@ -8,6 +8,7 @@ module.exports = {
   USER_ORDER_LINK: `${CLIENTNAME}/customer/account/my-orders`,
   CHANGE_PASSWORD_LINK: `${CLIENTNAME}/create-new-password`,
   ALL_PRODUCTS_LINK: `${CLIENTNAME}/products`,
+
 };
 
 

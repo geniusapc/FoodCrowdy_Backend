@@ -16,6 +16,10 @@ const schema = new Schema(
         type: String,
         required: true,
       },
+      phoneNumber: {
+        type: String,
+        required: true,
+      },
     },
     products: [
       {
@@ -23,6 +27,7 @@ const schema = new Schema(
         id: mongoose.Types.ObjectId,
         qty: Number,
         price: Number,
+        title: String,
       },
     ],
     orderRef: {

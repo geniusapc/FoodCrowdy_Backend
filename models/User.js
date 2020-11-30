@@ -1,6 +1,8 @@
 /* eslint func-names:"off", consistent-return:"off"    */
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { JWT_KEY } = require('../config/keys');
 const { Schema } = mongoose;
 
 const schema = new Schema(
@@ -21,12 +23,22 @@ const schema = new Schema(
       lowercase: true,
       trim: true,
     },
+    cooperativeId: {
+      type: mongoose.Types.ObjectId,
+    },
     isVerified: {
       type: Boolean,
       default: false,
     },
-    cooperative: {
-      type: Array,
+    roles: [],
+    accountStatus: {
+      type: String,
+      enum: ['active', 'suspended'],
+      default: 'active',
+    },
+    permission: {
+      type: String,
+      default: 'user',
     },
     walletBalance: {
       type: Number,
@@ -84,9 +96,14 @@ schema.pre('save', async function (next) {
   next();
 });
 
+schema.methods.authToken = async function () {
+  const user = this;
+  const token = jwt.sign({ _id: user._id, uniqueId: user.uniqueId }, JWT_KEY);
+  return token;
+};
+
 schema.methods.compareTransactionPin = async function (pin) {
   const user = this;
-  if(!user.transactionPin) return false
   const result = await bcrypt.compare(pin.toString(), user.transactionPin);
   return result;
 };
