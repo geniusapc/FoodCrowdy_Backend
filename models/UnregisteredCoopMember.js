@@ -12,7 +12,7 @@ const schema = new Schema(
       trim: true,
     },
     cooperativeId: {
-      type: String,
+      type: mongoose.Types.ObjectId,
     },
     isVerified: {
       type: Boolean,
@@ -31,5 +31,3 @@ const schema = new Schema(
 );
 
 module.exports = mongoose.model('unregistered_coop_member', schema);
-
-
