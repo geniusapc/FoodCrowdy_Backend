@@ -24,7 +24,7 @@ module.exports = async (req, res, next) => {
     tagName,
   });
 
-  if (claimedGift) throw new Error('You have already claimed this gift');
+  if (claimedGift.length) throw new Error('You have already claimed this gift');
 
   const code = generateCode();
 
