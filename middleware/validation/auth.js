@@ -62,7 +62,7 @@ module.exports.valThirdPartyAuth = (req, res, next) => {
     .keys({
       cooperativeId: Joi.objectId().required(),
       name: Joi.string().required(),
-      phoneNumber: Joi.string().required(),
+      phoneNumber: Joi.string(),
       email: Joi.string().email().lowercase().trim().min(6).required(),
     })
     .validate(req.body);
