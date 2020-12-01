@@ -44,8 +44,13 @@ const schema = new Schema(
     },
     paymentType: {
       type: String,
-      enum: ['fcWallet', "coopWallet", "flutterwave"],
+      enum: ['fcWallet', 'coopWallet', 'flutterwave'],
       required: [true, 'Payment type is required'],
+    },
+    deliveryStatus: {
+      type: String,
+      enum: ['processing', 'set for delivery', 'delivered'],
+      default: 'processing',
     },
   },
   { timestamps: true }
