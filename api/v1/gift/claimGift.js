@@ -2,8 +2,7 @@ const ClaimedCooperativeGift = require('../../../models/ClaimedCooperativeGift')
 const CooperativeGift = require('../../../models/CooperativeGift');
 const { response } = require('../../../utils/response');
 const sendMail = require('../../../utils/email/coopClaimGift');
-
-const generateCode = () => Math.floor(1000 + Math.random() * 9000);
+const { genRandNum } = require('../../../utils/randomCode/randomCode');
 
 module.exports = async (req, res, next) => {
   const { tagName, user } = req.body;
@@ -26,7 +25,15 @@ module.exports = async (req, res, next) => {
 
   if (claimedGift.length) throw new Error('You have already claimed this gift');
 
-  const code = generateCode();
+  let code = genRandNum(6);
+  const giftCode = await ClaimedCooperativeGift.find({}).select(['code']);
+
+  if (giftCode.length) {
+    const giftCodeList = giftCode.map((e) => e.code);
+    while (giftCodeList.includes(code)) {
+      code = genRandNum(6);
+    }
+  }
 
   await ClaimedCooperativeGift.create({
     cooperativeId,

@@ -64,11 +64,6 @@ const schema = new Schema(
       type: Boolean,
       default: false,
     },
-    deliveryStatus: {
-      type: String,
-      enum: ['processing', 'set for delivery', 'delivered'],
-      default: 'processing',
-    },
   },
   { timestamps: true }
 );

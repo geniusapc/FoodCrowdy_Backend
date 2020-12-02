@@ -5,14 +5,12 @@ const sendMail = require('../../utils/email/paymentReceipt');
 
 const { FLW_SECRET_HASH } = require('../../config/keys');
 const { purchaseAlert } = require('../../utils/sms/purchaseAlert');
-const { genRandNum } = require('../../utils/randomCode/randomCode');
 const reduceProductQuantity = require('../../utils/product/reduceProductQuantity');
 
 module.exports = async (req, res) => {
   const hash = req.headers['verif-hash'];
   if (!hash || hash !== FLW_SECRET_HASH) return res.sendStatus(400);
 
-  const code = genRandNum(4);
 
   const {
     status,
@@ -26,7 +24,6 @@ module.exports = async (req, res) => {
 
   if (!result && invoice) {
     const paymentDetails = {
-      code,
       orderRef,
       paymentType: 'flutterwave',
       amount,
@@ -42,7 +39,7 @@ module.exports = async (req, res) => {
 
     if (paymentDetails.status === 'successful') {
       await purchaseAlert();
-      await sendMail({ paymentDetails, invoice, code });
+      await sendMail({ paymentDetails, invoice });
       await reduceProductQuantity({ invoice });
     }
   }
