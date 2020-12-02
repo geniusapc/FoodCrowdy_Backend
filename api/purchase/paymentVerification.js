@@ -8,13 +8,10 @@ const sendMail = require('../../utils/email/paymentReceipt');
 const { purchaseAlert } = require('../../utils/sms/purchaseAlert');
 const { response } = require('../../utils/response');
 const reduceProductQuantity = require('../../utils/product/reduceProductQuantity');
-const { genRandNum } = require('../../utils/randomCode/randomCode');
 
 module.exports = async (req, res, next) => {
   const { cooperativeId } = req.user;
   const { orderRef, paymentType, amount, transactionPin } = req.body;
-
-  const code = genRandNum(4);
 
   const invoice = await Invoice.findOne({ orderRef }).lean();
   if (!invoice) throw new Error(`Order reference ${orderRef} not found`);
@@ -23,7 +20,6 @@ module.exports = async (req, res, next) => {
   if (result) throw new Error('Payment has been verified already');
 
   const payload = {
-    code,
     cooperative: cooperativeId,
     orderRef,
     paymentType,
@@ -62,7 +58,7 @@ module.exports = async (req, res, next) => {
 
   if (paymentDetails.status === 'successful') {
     await purchaseAlert();
-    await sendMail({ paymentDetails, invoice, code });
+    await sendMail({ paymentDetails, invoice });
     await reduceProductQuantity({ invoice });
   }
 
