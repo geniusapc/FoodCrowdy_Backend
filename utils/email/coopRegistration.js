@@ -4,7 +4,7 @@ const sendMail = require('./setup');
 const sendRegMail = async (user, id) => {
   const logo =
     'https://res.cloudinary.com/cmcwebcode/image/upload/v1596211234/foodcrowdy/LOGO_FOODCROWDY_pa3ciy.png';
-  let verificationLink = `${CLIENTNAME}/cooperatives/registration?token=${id}`;
+  let verificationLink = `${CLIENTNAME}/cooperatives/registration?token=${id}&email=${user.email}`;
   const coopId = user.cooperativeId ? user.cooperativeId : null;
 
   if (coopId) {
@@ -12,7 +12,7 @@ const sendRegMail = async (user, id) => {
   }
   const msg = {
     from: 'info@foodcrowdy.com',
-    to: user.email,
+    to: 'memcos@foodcrowdy.com',
     subject: 'Foodcrowdy - Verify your email',
     text: `
             Thank you for registering on Foodcrowdy.
