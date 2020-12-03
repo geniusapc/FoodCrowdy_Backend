@@ -35,7 +35,7 @@ module.exports = async (req, res, next) => {
     }
   }
 
-  await ClaimedCooperativeGift.create({
+  const result = await ClaimedCooperativeGift.create({
     cooperativeId,
     code,
     ...req.body,
@@ -44,5 +44,5 @@ module.exports = async (req, res, next) => {
   await sendMail({ user, code });
 
   const message = 'Gift claimed successfully';
-  return response(res, next, 200, null, message);
+  return response(res, next, 200, result, message);
 };
