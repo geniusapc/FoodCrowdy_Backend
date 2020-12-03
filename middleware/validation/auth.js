@@ -61,6 +61,7 @@ module.exports.valThirdPartyAuth = (req, res, next) => {
   const { error, value } = Joi.object()
     .keys({
       cooperativeId: Joi.objectId().required(),
+      staffId: Joi.string().required(),
       name: Joi.string().required(),
       phoneNumber: Joi.string(),
       email: Joi.string().email().lowercase().trim().min(6).required(),

@@ -15,6 +15,10 @@ const schema = new Schema(
       type: String,
       default: null,
     },
+    staffId: {
+      type: String,
+      default: null,
+    },
     name: {
       type: String,
     },

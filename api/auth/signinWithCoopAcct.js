@@ -4,7 +4,7 @@ const User = require('../../models/User');
 const generateUniqueId = require('../../utils/randomCode/userUniqueCode');
 
 module.exports = async (req, res) => {
-  const { name, email, phoneNumber, cooperativeId } = req.body;
+  const { name, email, phoneNumber, cooperativeId, staffId } = req.body;
 
   const user = await User.findOne({ email });
 
@@ -27,6 +27,7 @@ module.exports = async (req, res) => {
     isVerified: true,
     password: uuidv4(),
     uniqueId,
+    staffId,
   });
 
   const jwtToken = await newUser.authToken();
