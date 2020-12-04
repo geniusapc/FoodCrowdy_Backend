@@ -49,7 +49,7 @@ module.exports.checkPermission = (...permission) => {
     if (!valid) {
       error.status = 403;
       error.message =
-        'Access denied. you dont have permission to perform this action';
+        '- Access denied. you dont have permission to perform this action';
       error.type = 'FORBIDDEN';
       throw error;
     }
@@ -60,7 +60,7 @@ module.exports.checkPermission = (...permission) => {
 
 module.exports.checkRole = (...role) => {
   return async (req, res, next) => {
-    const valid = ['super', ...role].some((r) => req.user.roles.includes(r));
+    const valid = [...role].some((r) => req.user.roles.includes(r));
     const error = new Error();
 
     if (!valid) {
