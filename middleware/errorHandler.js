@@ -19,5 +19,5 @@ module.exports = (err, req, res, next) => {
       err.status = 500;
   }
 
-  return errorResponse(res, err.status, err.message);
+  return errorResponse(res, err.status, err.message, err.type);
 };

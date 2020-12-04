@@ -47,6 +47,7 @@ module.exports.valEditCoopProduct = (req, res, next) => {
       state: Joi.string().trim(),
       price: Joi.number(),
       description: Joi.string().trim(),
+      visibility: Joi.string().trim(),
       unit: Joi.string().trim(),
       quantity: Joi.number(),
       landingCost: Joi.number(),
