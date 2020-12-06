@@ -1,20 +1,33 @@
 const nodemailer = require('nodemailer');
-const smtpTransport = require('nodemailer-smtp-transport');
+const { google } = require('googleapis');
+const {
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI,
+  REFRESH_TOKEN,
+} = require('../../config/keys');
 
-const { MAIL_AUTH_PASS, MAIL_AUTH_USER } = require('../../config/keys');
+const oAuth2Client = new google.auth.OAuth2(
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI
+);
+
+oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
 module.exports = async (msg) => {
-  const transporter = nodemailer.createTransport(
-    smtpTransport({
-      host: 'box2181.bluehost.com',
-      port: 26,
-      // secure: true,
-      auth: {
-        user: MAIL_AUTH_USER,
-        pass: MAIL_AUTH_PASS,
-      },
-    })
-  );
+  const accessToken = await oAuth2Client.getAccessToken();
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      type: 'OAuth2',
+      user: 'foodcrowdy@gmail.com',
+      clientId: CLIENT_ID,
+      clientSecret: CLIENT_SECRET,
+      refreshToken: REFRESH_TOKEN,
+      accessToken,
+    },
+  });
 
   await transporter.sendMail(msg);
 };

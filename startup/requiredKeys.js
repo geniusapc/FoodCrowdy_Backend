@@ -13,9 +13,12 @@ const requiredSecretKeys = () => {
     'EBULKY_USER_NAME',
     'EBULKY_USER_NAME',
     'FLW_SECRET_HASH',
-    'MAIL_AUTH_USER',
-    'MAIL_AUTH_PASS',
     'JWT_KEY',
+
+    'CLIENT_ID',
+    'CLIENT_SECRET',
+    'REDIRECT_URI',
+    'REFRESH_TOKEN',
   ];
 
   keys.map((key) => {
