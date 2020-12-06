@@ -364,7 +364,7 @@ const payload = ({ user, code }) => {
 const Email = async ({ user, code }) => {
   const mail = payload({ user, code });
   const msg = {
-    from: 'info@foodcrowdy.com',
+    from: 'FoodCrowdy <foodcrowdy@gmail.com>',
     to: user.email,
     subject: 'Foodcrowdy - Cooperative Gift',
     text: mail,

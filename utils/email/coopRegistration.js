@@ -73,7 +73,7 @@ const sendRegMail = async (user, id) => {
   const payload = messageWrapper({ message });
 
   const msg = {
-    from: 'foodcrowdy@gmail.com',
+    from: 'FoodCrowdy <foodcrowdy@gmail.com>',
     to: `${user.email}, princearthur06@gmail.com`,
     subject: 'Foodcrowdy - Verify your email',
     html: payload,

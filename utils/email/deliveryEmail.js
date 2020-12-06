@@ -160,7 +160,7 @@ const sendPaymentReceipt = async ({ paymentDetails, invoice }) => {
   const mail = messageWrapper({ message });
 
   const msg = {
-    from: 'FoodCrowdy <info@foodcrowdy.com>',
+    from: 'FoodCrowdy <foodcrowdy@gmail.com>',
     to: paymentDetails.customer.email,
     subject: 'Receipt (Foodcrowdy) ',
     html: `${mail}`,

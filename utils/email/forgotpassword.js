@@ -55,7 +55,7 @@ const sendForgotMail = async (user, id) => {
   const mail = messageWrapper({ message });
 
   const msg = {
-    from: 'Foodcrowdy <info@foodcrowdy.com>',
+    from: 'FoodCrowdy <foodcrowdy@gmail.com>',
     to: user.email,
     subject: 'Foodcrowdy - Reset password',
     html: mail,
