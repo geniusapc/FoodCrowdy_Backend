@@ -27,11 +27,25 @@ module.exports.valEmail = (req, res, next) => {
   req.body = value;
   next();
 };
+
 module.exports.valChangePin = (req, res, next) => {
   const { error, value } = Joi.object()
     .keys({
       password: Joi.string().required(),
       transactionPin: Joi.string().required(),
+    })
+    .validate(req.body);
+
+  if (error) throw error;
+
+  req.body = value;
+  next();
+};
+module.exports.valChangePassword = (req, res, next) => {
+  const { error, value } = Joi.object()
+    .keys({
+      password: Joi.string().required(),
+      token: Joi.string().required(),
     })
     .validate(req.body);
 
