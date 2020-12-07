@@ -1,5 +1,5 @@
 const sendMail = require('./setup');
-const { CLIENTNAME } = require('../../config/keys');
+const { CHANGE_PASSWORD_LINK } = require('../../constants');
 const messageWrapper = require('./messageWrapper');
 
 const payload = ({ verificationLink, user }) => {
@@ -44,7 +44,7 @@ const payload = ({ verificationLink, user }) => {
 };
 
 const sendForgotMail = async (user, id) => {
-  let verificationLink = `${CLIENTNAME}/users/reset-password?token=${id}`;
+  let verificationLink = `${CHANGE_PASSWORD_LINK}?token=${id}`;
   const coopId =
     user.cooperative && user.cooperative.length ? user.cooperative[0] : null;
 
