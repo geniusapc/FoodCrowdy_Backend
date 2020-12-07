@@ -6,7 +6,7 @@ module.exports = {
   CONTACTUS_LINK: `${CLIENTNAME}/contact-us`,
   USER_PROFILE_LINK: `${CLIENTNAME}/customer/account/profile`,
   USER_ORDER_LINK: `${CLIENTNAME}/customer/account/my-orders`,
-  CHANGE_PASSWORD_LINK: `${CLIENTNAME}/cooperative/password-reset`,
+  CHANGE_PASSWORD_LINK: `${CLIENTNAME}/cooperatives/password-reset`,
   ALL_PRODUCTS_LINK: `${CLIENTNAME}/products`,
 
 };
