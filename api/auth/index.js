@@ -6,6 +6,7 @@ const {
   valSignup,
   valChangePin,
   valLogin,
+  valChangePassword,
   valThirdPartyAuth,
 } = require('../../middleware/validation/auth');
 
@@ -23,7 +24,7 @@ router.post('/signup', valSignup, signup);
 router.post('/signin-with-coop-account', valThirdPartyAuth, signinWithCoopAcct);
 router.post('/send-email-verification', valEmail, sendEmailVerification);
 router.post('/forgotten-password', valEmail, forgottenPassword);
-router.post('/change-password', valEmail, changePassword);
+router.post('/change-password', valChangePassword, changePassword);
 router.post('/change-transaction-pin', valChangePin, changeTransactionPin);
 router.get('/check-account-verification', userIsVerified);
 
