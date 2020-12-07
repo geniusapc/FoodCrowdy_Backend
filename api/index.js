@@ -111,7 +111,7 @@ router.patch(
   editUser
 );
 router.post(
-  '/change-transaction-pin',
+  '/user/change-transaction-pin',
   loginAuth,
   valChangePin,
   changeTransactionPin
