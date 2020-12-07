@@ -135,3 +135,17 @@ module.exports.valEditUser = (req, res, next) => {
   req.body = value;
   next();
 };
+
+module.exports.valChangePin = (req, res, next) => {
+  const { error, value } = Joi.object()
+    .keys({
+      password: Joi.string().required(),
+      transactionPin: Joi.string().required(),
+    })
+    .validate(req.body);
+
+  if (error) throw error;
+
+  req.body = value;
+  next();
+};
