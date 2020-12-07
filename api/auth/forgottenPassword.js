@@ -6,7 +6,6 @@ const Cache = require('../../models/Cache');
 
 module.exports = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
-
   if (user) {
     const emailToken = crypto.randomBytes(64).toString('hex');
     await Cache.findOrCreate(

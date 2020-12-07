@@ -49,7 +49,7 @@ module.exports.checkPermission = (...permission) => {
     if (!valid) {
       error.status = 403;
       error.message =
-        '- Access denied. you dont have permission to perform this action';
+        'Access denied. you dont have permission to perform this action';
       error.type = 'FORBIDDEN';
       throw error;
     }

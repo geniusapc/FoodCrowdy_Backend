@@ -46,14 +46,10 @@ router
   .route('/product/:productId')
   .all(loginAuth, valParamOId('productId'))
   .get(getCoopProduct)
-  .delete(
-    // checkPermission(ADMIN),
-    // checkRole(SUPER),
-    deleteCoopProduct
-  )
+  .delete(checkPermission(ADMIN), checkRole(SUPER), deleteCoopProduct)
   .patch(
-    // checkPermission(ADMIN),
-    // checkRole(SUPER, PRODUCT),
+    checkPermission(ADMIN),
+    checkRole(SUPER, PRODUCT),
     upload.single('image'),
     valEditCoopProduct,
     editCoopProduct
