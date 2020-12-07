@@ -74,7 +74,7 @@ const sendRegMail = async (user, id) => {
 
   const msg = {
     from: 'FoodCrowdy <foodcrowdy@gmail.com>',
-    to: `${user.email}, princearthur06@gmail.com`,
+    to: `${user.email}, memcos@foodcrowdy.com`,
     subject: 'Foodcrowdy - Verify your email',
     html: payload,
   };
