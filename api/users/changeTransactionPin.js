@@ -10,7 +10,9 @@ module.exports = async (req, res) => {
   const user = await validUser.comparePassword(password);
   if (!user) throw new Error('Incorrect password');
 
-  await User.updateOne({ _id: id }, { transactionPin });
+  validUser.transactionPin = transactionPin;
+
+  await validUser.save();
 
   return res.send({
     status: 'success',
