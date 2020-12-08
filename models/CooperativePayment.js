@@ -16,7 +16,7 @@ const schema = new Schema(
       required: [true, 'Invoice id is required'],
       ref: 'Coop_Invoice',
     },
-    cooperative: {
+    cooperativeId: {
       type: mongoose.Types.ObjectId,
       required: [true, 'cooperative Id ref is required'],
       ref: 'Cooperative',
