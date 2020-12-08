@@ -1,5 +1,5 @@
 const sendMail = require('./setup');
-const { messageWrapper } = require('./messageWrapper');
+const  messageWrapper  = require('./messageWrapper');
 
 const payload = ({ user, code }) => {
   return `
