@@ -45,8 +45,7 @@ const payload = ({ verificationLink, user }) => {
 
 const sendForgotMail = async (user, id) => {
   let verificationLink = `${CHANGE_PASSWORD_LINK}?token=${id}`;
-  const coopId =
-    user.cooperative && user.cooperative.length ? user.cooperative[0] : null;
+  const coopId = user.cooperativeId;
 
   if (coopId) {
     verificationLink = `${verificationLink}&coopId=${coopId}`;
