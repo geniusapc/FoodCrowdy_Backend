@@ -29,7 +29,6 @@ module.exports = async (req, res) => {
 
     const user = await User.findById(userId);
     if (!user) return res.status(400).send({ message: 'Invalid user' });
-    console.log(user.cooperativeId);
 
     const paymentDetails = {
       orderRef,
@@ -52,6 +51,6 @@ module.exports = async (req, res) => {
     }
   }
 
-  console.log(3);
+
   return res.sendStatus(200);
 };

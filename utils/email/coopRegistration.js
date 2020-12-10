@@ -63,8 +63,8 @@ const inner = ({ verificationLink, user }) => {
 
 const sendRegMail = async (user, id) => {
   let verificationLink = `${CLIENTNAME}/cooperatives/registration?token=${id}&email=${user.email}`;
-  const coopId =
-  user.cooperative && user.cooperative.length ? user.cooperative[0] : null;
+ 
+  const coopId = user.cooperativeId;
 
   if (coopId) {
     verificationLink = `${verificationLink}&coopId=${coopId}`;
