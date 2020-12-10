@@ -10,7 +10,7 @@ module.exports = async ({ otp, phoneNumber }) => {
       },
       message: {
         sender: 'Foodcrowdy',
-        messagetext: `${otp}`,
+        messagetext: `otp ${otp }`,
         flash: '0',
       },
       recipients: {
@@ -28,8 +28,6 @@ module.exports = async ({ otp, phoneNumber }) => {
     'http://api.ebulksms.com:8080/sendsms.json',
     payload
   );
-  console.log(result);
-  console.log({ otp, phoneNumber });
   if (result.data.response.status === 'INVALID_RECIPIENT')
     return {
       error: result.data.response.status,
