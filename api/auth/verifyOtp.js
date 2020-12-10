@@ -5,7 +5,7 @@ module.exports = async (req, res) => {
   const { phoneNumber, otp } = req.body;
 
   const cache = await Cache.findOne({ phoneNumber });
-  
+
   if (!cache)
     return res.status(422).send({ message: 'Please generate an OTP' });
   if (cache.isVerified)

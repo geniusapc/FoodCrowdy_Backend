@@ -11,6 +11,10 @@ const schema = new Schema(
       lowercase: true,
       trim: true,
     },
+    phoneNumber: {
+      type: String,
+      trim: true,
+    },
     cooperativeId: {
       type: mongoose.Types.ObjectId,
     },

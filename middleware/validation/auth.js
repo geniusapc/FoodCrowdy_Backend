@@ -53,7 +53,7 @@ module.exports.valVerifyOtp = (req, res, next) => {
         .pattern(/^\d+$/)
         .message('phoneNumber format must be 2348000000000')
         .required(),
-      otp: Joi.number().required(),
+      otp: Joi.string().required(),
     })
     .validate(req.body);
 
