@@ -4,17 +4,18 @@ const { genRandNum } = require('../../utils/randomCode/randomCode');
 const sendOtp = require('../../utils/sms/sendOtp');
 
 module.exports = async (req, res) => {
-  const user = await User.findOne({ phoneNumber: req.body.phoneNumber });
+  const { phoneNumber } = req.body;
+  const user = await User.findOne({ phoneNumber });
   if (!user) throw new Error('Invalid User');
 
   const otp = genRandNum(4);
 
   await Cache.findOrCreate(
     { userId: user._id },
-    { phoneNumber: req.body.phoneNumber, otp },
+    { phoneNumber, otp, isVerified: false },
     () => {}
   );
 
-  await sendOtp({ otp, phoneNumber: req.body.phoneNumber });
+  await sendOtp({ otp, phoneNumber });
   return res.sendStatus(200);
 };
