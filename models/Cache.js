@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const findOrCreate = require("mongoose-find-or-create");
+const mongoose = require('mongoose');
+const findOrCreate = require('mongoose-find-or-create');
 const { Schema } = mongoose;
 
 const schema = new Schema(
@@ -15,10 +15,10 @@ const schema = new Schema(
       type: String,
     },
     phoneNumber: {
-      type: Number,
+      type: String,
     },
     otp: {
-      type: Number,
+      type: String,
     },
     isVerified: {
       type: Boolean,
@@ -29,5 +29,5 @@ const schema = new Schema(
 );
 
 schema.plugin(findOrCreate);
-const EmailCache = mongoose.model("Cache", schema);
+const EmailCache = mongoose.model('Cache', schema);
 module.exports = EmailCache;

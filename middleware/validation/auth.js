@@ -28,6 +28,40 @@ module.exports.valEmail = (req, res, next) => {
   next();
 };
 
+module.exports.valPhoneNumber = (req, res, next) => {
+  const { error, value } = Joi.object()
+    .keys({
+      phoneNumber: Joi.string()
+        .length(13)
+        .pattern(/^\d+$/)
+        .message('phoneNumber format must be 2348000000000')
+        .required(),
+    })
+    .validate(req.body);
+
+  if (error) throw error;
+
+  req.body = value;
+  next();
+};
+
+module.exports.valVerifyOtp = (req, res, next) => {
+  const { error, value } = Joi.object()
+    .keys({
+      phoneNumber: Joi.string()
+        .length(13)
+        .pattern(/^\d+$/)
+        .message('phoneNumber format must be 2348000000000')
+        .required(),
+      otp: Joi.string().required(),
+    })
+    .validate(req.body);
+
+  if (error) throw error;
+
+  req.body = value;
+  next();
+};
 
 module.exports.valChangePassword = (req, res, next) => {
   const { error, value } = Joi.object()
@@ -60,10 +94,11 @@ module.exports.valLogin = (req, res, next) => {
 module.exports.valSignup = (req, res, next) => {
   const { error, value } = Joi.object()
     .keys({
-      token: Joi.string().required(),
+      token: Joi.string(),
       password: Joi.string().required().min(8),
       transactionPin: Joi.number().min(4).required(),
       phoneNumber: Joi.string().required(),
+      confirmationType: Joi.string().valid('otp'),
     })
     .validate(req.body);
 

@@ -4,9 +4,22 @@ const UnregisteredCoopMember = require('../../models/UnregisteredCoopMember');
 const Cache = require('../../models/Cache');
 
 module.exports = async (req, res) => {
-  const { password, phoneNumber, token, transactionPin } = req.body;
+  const {
+    password,
+    phoneNumber,
+    token,
+    transactionPin,
+    confirmationType,
+  } = req.body;
 
-  const result = await Cache.findOne({ emailToken: token });
+  let result;
+  if (confirmationType === 'otp') {
+    result = await Cache.findOne({ phoneNumber });
+    if (!result.isVerified) result = null;
+  } else {
+    result = await Cache.findOne({ emailToken: token });
+  }
+
   if (!result) throw new Error('Invalid token');
 
   const user = await UnregisteredCoopMember.findById(result.userId);
@@ -38,7 +51,10 @@ module.exports = async (req, res) => {
     cooperativeId: user.cooperativeId,
   });
 
-  await Cache.deleteOne({ emailToken: token });
+  const cacheCondition =
+    confirmationType === 'otp' ? { phoneNumber } : { emailToken: token };
+
+  await Cache.deleteOne(cacheCondition);
   await UnregisteredCoopMember.findByIdAndDelete(result.userId);
 
   const jwtToken = await newUser.authToken();
