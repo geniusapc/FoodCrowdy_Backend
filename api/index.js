@@ -45,7 +45,22 @@ const { loginAuth, checkRole, checkPermission } = require('../middleware/auth');
 
 // PRODUCTS
 router
-  .route('/product/:productId')
+  .route('/products/cooperative/:cooperativeId')
+  .get(loginAuth, valParamOId('cooperativeId'), getAllCoopProduct);
+
+router
+  .route('/products')
+  .post(
+    loginAuth,
+    checkPermission(ADMIN),
+    checkRole(SUPER, PRODUCT),
+    upload.single('image'),
+    valUploadCoopProduct,
+    addCoopProduct
+  );
+
+router
+  .route('/products/:productId')
   .all(loginAuth, valParamOId('productId'))
   .get(getCoopProduct)
   .delete(checkPermission(ADMIN), checkRole(SUPER), deleteCoopProduct)
@@ -55,18 +70,6 @@ router
     upload.single('image'),
     valEditCoopProduct,
     editCoopProduct
-  );
-router
-  .route('/products/cooperative/:cooperativeId')
-  .all(loginAuth, valParamOId('cooperativeId'))
-  .get(getAllCoopProduct)
-  .post(
-    loginAuth,
-    checkPermission(ADMIN),
-    checkRole(SUPER, PRODUCT),
-    upload.single('image'),
-    valUploadCoopProduct,
-    addCoopProduct
   );
 
 //  PURCHASE

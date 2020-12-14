@@ -19,8 +19,17 @@ module.exports.valParamOId = (...params) => {
 };
 
 module.exports.valUploadCoopProduct = (req, res, next) => {
+  if (req.body.cooperativeId) {
+    try {
+      req.body.cooperativeId = JSON.parse(req.body.cooperativeId);
+    } catch {
+      req.body.cooperativeId = [];
+    }
+  }
+
   const { error, value } = Joi.object()
     .keys({
+      cooperativeId: Joi.array().items(Joi.objectId().required()).required(),
       title: Joi.string().trim().required(),
       category: Joi.string().trim().required(),
       state: Joi.string().trim().required(),
@@ -40,24 +49,36 @@ module.exports.valUploadCoopProduct = (req, res, next) => {
   next();
 };
 module.exports.valEditCoopProduct = (req, res, next) => {
+  if (req.body.cooperativeId) {
+    try {
+      req.body.cooperativeId = JSON.parse(req.body.cooperativeId);
+    } catch (error) {
+      req.body.cooperativeId = [];
+    }
+  }
   const { error, value } = Joi.object()
     .keys({
-      title: Joi.string().trim(),
-      category: Joi.string().trim(),
-      state: Joi.string().trim(),
-      price: Joi.number(),
-      description: Joi.string().trim(),
-      visibility: Joi.string().trim(),
-      unit: Joi.string().trim(),
-      quantity: Joi.number(),
-      landingCost: Joi.number(),
-      baseProfit: Joi.number(),
-      coopPercentProfit: Joi.number(),
+      cooperativeId: Joi.array().items(Joi.objectId()).allow(''),
+      title: Joi.string().trim().allow(''),
+      category: Joi.string().trim().allow(''),
+      state: Joi.string().trim().allow(''),
+      price: Joi.number().allow(''),
+      description: Joi.string().trim().allow(''),
+      visibility: Joi.string().trim().allow(''),
+      unit: Joi.string().trim().allow(''),
+      quantity: Joi.number().allow(''),
+      landingCost: Joi.number().allow(''),
+      baseProfit: Joi.number().allow(''),
+      coopPercentProfit: Joi.number().allow(''),
     })
     .validate(req.body);
 
   if (error) throw error;
-  Object.keys(value).forEach((key) => !value[key] && delete value[key]);
+  Object.keys(value).forEach((key) => {
+    const val =
+      key !== 'quantity' && !value[key] ? delete value[key] : value[key];
+    return val;
+  });
   if (!Object.keys(value).length)
     throw new Error('you must specify atleast one field');
   req.body = value;

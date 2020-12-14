@@ -3,8 +3,6 @@ const Cooperative = require('../../models/CoopProducts');
 const { response } = require('../../utils/response');
 
 module.exports = async (req, res, next) => {
-  const { cooperativeId } = req.params;
-
   if (req.file) {
     const { secure_url: image } = await cloudinary.v2.uploader
       .upload(req.file.path, {
@@ -15,7 +13,7 @@ module.exports = async (req, res, next) => {
       });
     req.body.image = image;
   }
-  await Cooperative.create({ ...req.body, cooperativeId });
+  await Cooperative.create({ ...req.body });
 
   const message = 'Product uplaoded successfully';
   return response(res, next, 200, null, message);
