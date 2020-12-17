@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 const schema = new Schema(
   {
     cooperativeId: [{ type: mongoose.Types.ObjectId, ref: 'Cooperative' }],
-
     title: {
       type: String,
     },

@@ -20,7 +20,7 @@ module.exports = async (req, res, next) => {
   if (result) throw new Error('Payment has been verified already');
 
   const payload = {
-    cooperative: cooperativeId,
+    cooperativeId,
     orderRef,
     paymentType,
     amount,
