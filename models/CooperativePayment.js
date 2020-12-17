@@ -44,6 +44,10 @@ const schema = new Schema(
       enum: ['processing', 'set for delivery', 'delivered'],
       default: 'processing',
     },
+    settlementInvoiceIsGenerated: {
+      type: Boolean,
+      default: 'false',
+    },
   },
   { timestamps: true }
 );
