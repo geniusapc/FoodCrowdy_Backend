@@ -8,9 +8,11 @@ const constant = require('../../constants');
 
 const getSettlement = require('./getSettlement');
 const submitPaymentReceipt = require('./submitPaymentReceipt');
+const changeSettlementStatus = require('./changeSettlementStatus');
 const auth = require('../../middleware/auth');
 const {
   valSettlementReceipt,
+  valSettlementStatus,
 } = require('../../middleware/validation/cooperative');
 
 const { ADMIN, COOPERATIVE, SUPER, COOPADMIN } = constant;
@@ -26,6 +28,7 @@ router.get(
   checkRole(SUPER, COOPADMIN),
   getSettlement
 );
+
 router.post(
   '/receipt',
   loginAuth,
@@ -34,6 +37,15 @@ router.post(
   upload.single('receipt'),
   valSettlementReceipt,
   submitPaymentReceipt
+);
+
+router.patch(
+  '/status',
+  loginAuth,
+  checkPermission(ADMIN),
+  checkRole(SUPER),
+  valSettlementStatus,
+  changeSettlementStatus
 );
 
 module.exports = router;

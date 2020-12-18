@@ -9,22 +9,21 @@ module.exports = async (req, res, next) => {
   const settlement = await Settlement.findOne({ _id: settlementId });
 
   if (!settlement) throw new Error('invoice do not exist');
-  let receipt;
+  if (settlement.status === 'paid') throw new Error('payment already settled');
 
   if (req.file) {
-    const { secure_url: image } = await cloudinary.v2.uploader
+    const { secure_url: receipt } = await cloudinary.v2.uploader
       .upload(req.file.path, {
         folder: '/settlement/',
       })
       .catch((err) => {
         throw err.error;
       });
-    receipt = image;
+    settlement.receipt = receipt;
   }
 
   settlement.paidBy = _id;
   settlement.paidOn = Date();
-  settlement.receipt = receipt;
   settlement.status = 'processing';
   settlement.save();
 
