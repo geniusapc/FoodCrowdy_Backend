@@ -48,4 +48,13 @@ router.patch(
   changeSettlementStatus
 );
 
+router.get(
+  '/pre-invoice-balance',
+  loginAuth,
+  checkPermission(ADMIN, COOPERATIVE),
+  checkRole(SUPER, COOPADMIN),
+  valSettlementStatus,
+  changeSettlementStatus
+);
+
 module.exports = router;
