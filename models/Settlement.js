@@ -31,8 +31,8 @@ const schema = new Schema(
     },
     status: {
       type: String,
-      enum: ['not paid', 'pending', 'confirmed', 'declined'],
-      default: 'not paid',
+      enum: ['outstanding', 'processing', 'paid', 'declined'],
+      default: 'outstanding',
     },
   },
   { timestamps: true }

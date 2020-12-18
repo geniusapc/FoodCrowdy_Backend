@@ -19,11 +19,13 @@ const checkout = require('./purchase/checkout');
 const paymentStatus = require('./purchase/paymentStatus');
 const paymentVerification = require('./purchase/paymentVerification');
 
-const ADMIN = 'admin';
-const COOPERATIVE = 'cooperative';
-const SUPER = 'super';
-const PRODUCT = 'product';
-const COOPADMIN = 'coop_admin';
+const {
+  ADMIN,
+  COOPERATIVE,
+  SUPER,
+  PRODUCT,
+  COOPADMIN,
+} = require('../constants');
 
 // USERS
 const registeredCoopMember = require('./users/registeredCoopMember');

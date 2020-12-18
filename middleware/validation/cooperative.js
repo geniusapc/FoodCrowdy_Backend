@@ -170,3 +170,19 @@ module.exports.valChangePin = (req, res, next) => {
   req.body = value;
   next();
 };
+
+
+//  -> SETTLEMENT
+
+module.exports.valSettlementReceipt = (req, res, next) => {
+  const { error, value } = Joi.object()
+    .keys({
+      settlementId: Joi.objectId().required(),
+    })
+    .validate(req.body);
+
+  if (error) throw error;
+
+  req.body = value;
+  next();
+};

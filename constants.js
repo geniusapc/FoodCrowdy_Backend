@@ -9,6 +9,9 @@ module.exports = {
   CHANGE_PASSWORD_LINK: `${CLIENTNAME}/cooperatives/password-reset`,
   ALL_PRODUCTS_LINK: `${CLIENTNAME}/products`,
 
+  ADMIN: 'admin',
+  COOPERATIVE: 'cooperative',
+  SUPER: 'super',
+  PRODUCT: 'product',
+  COOPADMIN: 'coop_admin',
 };
-
-
