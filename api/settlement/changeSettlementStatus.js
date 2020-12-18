@@ -16,6 +16,6 @@ module.exports = async (req, res, next) => {
   settlement.status = status;
   settlement.save();
 
-  const message = 'Settlement retrived  successfully';
+  const message = 'Status changed  successfully';
   return response(res, next, 200, null, message);
 };

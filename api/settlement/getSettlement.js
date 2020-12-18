@@ -12,6 +12,6 @@ module.exports = async (req, res, next) => {
 
   const settlement = await Settlement.find(condition);
 
-  const message = 'Settlement retrived  successfully';
+  const message = 'Settlement retrieved  successfully';
   return response(res, next, 200, settlement, message);
 };
