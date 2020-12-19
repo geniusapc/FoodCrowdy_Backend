@@ -9,6 +9,7 @@ const constant = require('../../constants');
 const getSettlement = require('./getSettlement');
 const submitPaymentReceipt = require('./submitPaymentReceipt');
 const changeSettlementStatus = require('./changeSettlementStatus');
+const preInvoiceBalance = require('./currentBill');
 const auth = require('../../middleware/auth');
 const {
   valSettlementReceipt,
@@ -49,12 +50,11 @@ router.patch(
 );
 
 router.get(
-  '/pre-invoice-balance',
+  '/current-bill',
   loginAuth,
   checkPermission(ADMIN, COOPERATIVE),
   checkRole(SUPER, COOPADMIN),
-  valSettlementStatus,
-  changeSettlementStatus
+  preInvoiceBalance
 );
 
 module.exports = router;

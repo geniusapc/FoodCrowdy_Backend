@@ -17,7 +17,6 @@ module.exports = async (req, res, next) => {
 
   const settlement = await Payment.find(conditions).select(filter);
 
-  //   if (settlement.length) {
   const totalPrice = settlement.reduce((a, { amount }) => a + amount, 0);
   const orderRef = settlement.map((e) => e.orderRef);
 
@@ -26,8 +25,7 @@ module.exports = async (req, res, next) => {
     orderRef,
     cooperativeId,
   };
-  //   }
 
-  const message = 'Settlement retrieved  successfully';
+  const message = 'Current Bill retrieved  successfully';
   return response(res, next, 200, data, message);
 };
