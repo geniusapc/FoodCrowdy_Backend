@@ -10,8 +10,10 @@ const getSettlement = require('./getSettlement');
 const submitPaymentReceipt = require('./submitPaymentReceipt');
 const changeSettlementStatus = require('./changeSettlementStatus');
 const preInvoiceBalance = require('./currentBill');
+const getSettlementProductDetails = require('./getSettlementProductDetails');
 const auth = require('../../middleware/auth');
 const {
+  valParamOId,
   valSettlementReceipt,
   valSettlementStatus,
 } = require('../../middleware/validation/cooperative');
@@ -55,6 +57,15 @@ router.get(
   checkPermission(ADMIN, COOPERATIVE),
   checkRole(SUPER, COOPADMIN),
   preInvoiceBalance
+);
+
+router.get(
+  '/:settlementId',
+  loginAuth,
+  checkPermission(ADMIN, COOPERATIVE),
+  checkRole(SUPER, COOPADMIN),
+  valParamOId('settlementId'),
+  getSettlementProductDetails
 );
 
 module.exports = router;
