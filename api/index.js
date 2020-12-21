@@ -19,11 +19,13 @@ const checkout = require('./purchase/checkout');
 const paymentStatus = require('./purchase/paymentStatus');
 const paymentVerification = require('./purchase/paymentVerification');
 
-const ADMIN = 'admin';
-const COOPERATIVE = 'cooperative';
-const SUPER = 'super';
-const PRODUCT = 'product';
-const COOPADMIN = 'coop_admin';
+const {
+  ADMIN,
+  COOPERATIVE,
+  SUPER,
+  PRODUCT,
+  COOPADMIN,
+} = require('../constants');
 
 // USERS
 const registeredCoopMember = require('./users/registeredCoopMember');
@@ -45,7 +47,22 @@ const { loginAuth, checkRole, checkPermission } = require('../middleware/auth');
 
 // PRODUCTS
 router
-  .route('/product/:productId')
+  .route('/products/cooperative/:cooperativeId')
+  .get(loginAuth, valParamOId('cooperativeId'), getAllCoopProduct);
+
+router
+  .route('/products')
+  .post(
+    loginAuth,
+    checkPermission(ADMIN),
+    checkRole(SUPER, PRODUCT),
+    upload.single('image'),
+    valUploadCoopProduct,
+    addCoopProduct
+  );
+
+router
+  .route('/products/:productId')
   .all(loginAuth, valParamOId('productId'))
   .get(getCoopProduct)
   .delete(checkPermission(ADMIN), checkRole(SUPER), deleteCoopProduct)
@@ -55,18 +72,6 @@ router
     upload.single('image'),
     valEditCoopProduct,
     editCoopProduct
-  );
-router
-  .route('/products/cooperative/:cooperativeId')
-  .all(loginAuth, valParamOId('cooperativeId'))
-  .get(getAllCoopProduct)
-  .post(
-    loginAuth,
-    checkPermission(ADMIN),
-    checkRole(SUPER, PRODUCT),
-    upload.single('image'),
-    valUploadCoopProduct,
-    addCoopProduct
   );
 
 //  PURCHASE

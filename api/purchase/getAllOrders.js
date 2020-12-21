@@ -3,14 +3,22 @@ const { response } = require('../../utils/response');
 
 module.exports = async (req, res, next) => {
   const { permission, cooperativeId } = req.user;
-  // const filter = [];
+  const { startDate, endDate, orderRef } = req.query;
 
-  let condition = {
-    cooperative: cooperativeId,
-    paymentType: { $ne: 'flutterwave' },
-  }; // coop admin see all payment that is not flutter payment
+  let condition = {};
 
-  if (permission === 'admin') condition = {};
+  if (orderRef) condition.orderRef = { $in: orderRef };
+
+  if (startDate && endDate)
+    condition.createdAt = { $gt: startDate, $lt: endDate };
+
+  if (permission !== 'admin') {
+    condition = {
+      ...condition,
+      cooperative: cooperativeId,
+      paymentType: { $ne: 'flutterwave' },
+    }; // coop admin see all payment that is not flutter payment
+  }
 
   const invoice = await Payment.find(condition).populate('invoice');
 
