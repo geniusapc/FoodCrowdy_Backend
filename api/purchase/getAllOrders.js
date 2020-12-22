@@ -15,7 +15,7 @@ module.exports = async (req, res, next) => {
   if (permission !== 'admin') {
     condition = {
       ...condition,
-      cooperative: cooperativeId,
+      cooperativeId,
       paymentType: { $ne: 'flutterwave' },
     }; // coop admin see all payment that is not flutter payment
   }
