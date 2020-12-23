@@ -1,5 +1,5 @@
 const sendMail = require('./setup');
-const  messageWrapper  = require('./messageWrapper');
+const messageWrapper = require('./messageWrapper');
 
 const payload = ({ user, code }) => {
   return `
@@ -13,14 +13,16 @@ const payload = ({ user, code }) => {
   <tr>
     <td class="link-wrap"
       style="font-family: Open Sans, Helvetica, Tahoma, Arial, sans-serif; font-size: 0px; padding: 0; padding-bottom: 20px; word-break: break-word;">
-      <div
+      <tr
         style="font-family: Open Sans, Helvetica, Tahoma, Arial, sans-serif; font-size: 16px; font-weight: 300; line-height: 15px; text-align: left; color: #4F4F4F;">
+        <td>
         Use your secret code below to claim your item from the delivery team.
-      </div>
-      <div
+        </td>
+      </tr>
+      <tr
         style="font-size:1.4rem; font-weight: 600; text-align: center; margin: .5rem  0 0 0;">
-        ${code}
-      </div>
+        <td>${code}</td>
+      </tr>
     </td>
   </tr>
 </table>
@@ -29,10 +31,6 @@ const payload = ({ user, code }) => {
 };
 
 const Email = async ({ user, code }) => {
-
-
-
-  
   const message = payload({ user, code });
   const mail = messageWrapper({ message });
 
