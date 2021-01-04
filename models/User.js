@@ -27,32 +27,6 @@ const schema = new Schema(
       lowercase: true,
       trim: true,
     },
-    cooperativeId: {
-      type: mongoose.Types.ObjectId,
-    },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
-    roles: [],
-    accountStatus: {
-      type: String,
-      enum: ['active', 'suspended'],
-      default: 'active',
-    },
-    permission: {
-      type: String,
-      default: 'user',
-    },
-    wallet: {
-      type: String,
-      enum: ['enabled', 'disabled'],
-      default: 'disabled',
-    },
-    walletBalance: {
-      type: Number,
-      default: 0,
-    },
     password: {
       type: String,
     },
@@ -73,17 +47,51 @@ const schema = new Schema(
     location: {
       type: String,
     },
+    cooperativeId: {
+      type: mongoose.Types.ObjectId,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    permission: {
+      type: String,
+      default: 'user',
+      enum: ['admin', 'user', 'cooperative'],
+    },
+    roles: {
+      type: [String],
+      enum: ['super', 'product', 'customer_care', 'coop_admin', 'logistics'],
+    },
+    accountStatus: {
+      type: String,
+      enum: ['active', 'suspended'],
+      default: 'active',
+    },
+    wallet: {
+      status: {
+        type: String,
+        enum: ['enabled', 'disabled'],
+        default: 'disabled',
+      },
+      balance: {
+        type: Number,
+        default: 0,
+      },
+    },
     referralId: {
       type: String,
       default: null,
     },
-    monthOfBirth: {
-      type: Number,
-      default: null,
-    },
-    dayOfBirth: {
-      type: Number,
-      default: null,
+    dob: {
+      day: {
+        type: Number,
+        default: null,
+      },
+      month: {
+        type: Number,
+        default: null,
+      },
     },
   },
   { timestamps: true }
@@ -101,7 +109,6 @@ schema.pre('save', async function (next) {
     const hashedPin = await bcrypt.hash(user.transactionPin, salt);
     user.transactionPin = hashedPin;
   }
-
   next();
 });
 
