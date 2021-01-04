@@ -44,6 +44,11 @@ const schema = new Schema(
       type: String,
       default: 'user',
     },
+    wallet: {
+      type: String,
+      enum: ['enabled', 'disabled'],
+      default: 'disabled',
+    },
     walletBalance: {
       type: Number,
       default: 0,
