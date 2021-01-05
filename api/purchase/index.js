@@ -31,11 +31,11 @@ router.get(
   getAllOrders
 );
 
-router.post('/purchase/checkout', loginAuth, valCheckout, checkout);
-router.get('/purchase/payment-status/:orderRef', loginAuth, paymentStatus);
-router.get('/purchase/pay-with-wallet', loginAuth, paymentWithWallet);
+router.post('/checkout', loginAuth, valCheckout, checkout);
+router.get('/payment-status/:orderRef', loginAuth, paymentStatus);
+router.get('/pay-with-wallet', loginAuth, paymentWithWallet);
 router.post(
-  '/purchase/payment-verification',
+  '/payment-verification',
   loginAuth,
   valPayment,
   paymentVerification

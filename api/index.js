@@ -14,24 +14,14 @@ const deleteCoopProduct = require('./products/deleteCoopProduct');
 
 const {
   ADMIN,
-  COOPERATIVE,
   SUPER,
   PRODUCT,
-  COOPADMIN,
 } = require('../constants');
-
-// USERS
-const registeredCoopMember = require('./users/registeredCoopMember');
-const unRegisteredCoopMembers = require('./users/unRegisteredCoopMembers');
-const editUser = require('./users/editUser');
-const changeTransactionPin = require('./users/changeTransactionPin');
 
 const {
   valParamOId,
   valUploadCoopProduct,
   valEditCoopProduct,
-  valEditUser,
-  valChangePin,
 } = require('../middleware/validation/cooperative');
 
 const { loginAuth, checkRole, checkPermission } = require('../middleware/auth');
@@ -65,34 +55,6 @@ router
     editCoopProduct
   );
 
-// Users
-router.get(
-  '/users/registered-coop-members',
-  loginAuth,
-  checkPermission(ADMIN, COOPERATIVE),
-  checkRole(SUPER, COOPADMIN),
-  registeredCoopMember
-);
-router.get(
-  '/users/unregistered-coop-members',
-  loginAuth,
-  checkPermission(ADMIN, COOPERATIVE),
-  checkRole(SUPER, COOPADMIN),
-  unRegisteredCoopMembers
-);
-router.patch(
-  '/user/:userId',
-  loginAuth,
-  checkPermission(ADMIN, COOPERATIVE),
-  checkRole(SUPER, COOPADMIN),
-  valEditUser,
-  editUser
-);
-router.post(
-  '/user/change-transaction-pin',
-  loginAuth,
-  valChangePin,
-  changeTransactionPin
-);
+
 
 module.exports = router;

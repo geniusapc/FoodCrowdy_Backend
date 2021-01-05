@@ -143,8 +143,20 @@ module.exports.valPayment = (req, res, next) => {
 module.exports.valEditUser = (req, res, next) => {
   const { error, value } = Joi.object()
     .keys({
-      walletBalance: Joi.number(),
+      wallet: Joi.object().keys({
+        balance: Joi.number(),
+        status: Joi.string().valid('enabled', 'disabled'),
+      }),
       accountStatus: Joi.string().valid('active', 'suspended'),
+      permission: Joi.string().valid('admin', 'user', 'cooperative'),
+      roles: Joi.array().items(
+        Joi.valid(
+          'product',
+          'customer_care',
+          'coop_admin',
+          'logistics'
+        )
+      ),
     })
     .validate(req.body);
 
@@ -152,6 +164,12 @@ module.exports.valEditUser = (req, res, next) => {
   Object.keys(value).forEach((key) => !value[key] && delete value[key]);
   if (!Object.keys(value).length)
     throw new Error('you must specify atleast one field');
+
+  if (value.wallet) {
+    Object.keys(value.wallet).forEach(
+      (key) => !value.wallet[key] && delete value.wallet[key]
+    );
+  }
 
   req.body = value;
   next();
