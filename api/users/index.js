@@ -3,6 +3,7 @@ const router = require('express').Router();
 
 const { ADMIN, COOPERATIVE, SUPER, COOPADMIN } = require('../../constants');
 
+const getAllUsers = require('./getAllUsers');
 const registeredCoopMember = require('./registeredCoopMember');
 const unRegisteredCoopMembers = require('./unRegisteredCoopMembers');
 const editUser = require('./editUser');
@@ -21,6 +22,13 @@ const {
 } = require('../../middleware/auth');
 
 // Users
+router.get(
+  '/',
+  loginAuth,
+  checkPermission(ADMIN, COOPERATIVE),
+  checkRole(SUPER, COOPADMIN),
+  getAllUsers
+);
 router.get(
   '/registered-coop-members',
   loginAuth,
