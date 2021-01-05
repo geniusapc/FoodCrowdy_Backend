@@ -34,11 +34,12 @@ module.exports = async (req, res, next) => {
   const user = await User.findById(invoice.user.id);
   if (!user) throw new Error('User does not exist');
 
-  if (user.walletBalance < amount) throw new Error('Insufficient balance');
+  const { wallet} = user;
 
-  const { walletBalance } = user;
+  if (wallet.balance < amount) throw new Error('Insufficient balance');
 
-  user.walletBalance = walletBalance - amount;
+
+  user.wallet.balance = wallet.balance - amount;
   await user.save();
 
   const paymentDetails = await Payment.create(payload);

@@ -47,7 +47,7 @@ module.exports = async (req, res) => {
     email: user.email,
     name: user.name,
     permission: 'cooperative',
-    walletBalance: user.walletBalance,
+    wallet: { status: 'enabled', balance: user.walletBalance },
     cooperativeId: user.cooperativeId,
   });
 

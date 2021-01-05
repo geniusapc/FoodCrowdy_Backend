@@ -12,13 +12,6 @@ const addCoopProduct = require('./products/addCoopProduct');
 const editCoopProduct = require('./products/editCoopProduct');
 const deleteCoopProduct = require('./products/deleteCoopProduct');
 
-// PURCHASE
-const myOrders = require('./purchase/myPurchase');
-const getAllOrders = require('./purchase/getAllOrders');
-const checkout = require('./purchase/checkout');
-const paymentStatus = require('./purchase/paymentStatus');
-const paymentVerification = require('./purchase/paymentVerification');
-
 const {
   ADMIN,
   COOPERATIVE,
@@ -37,8 +30,6 @@ const {
   valParamOId,
   valUploadCoopProduct,
   valEditCoopProduct,
-  valCheckout,
-  valPayment,
   valEditUser,
   valChangePin,
 } = require('../middleware/validation/cooperative');
@@ -73,24 +64,6 @@ router
     valEditCoopProduct,
     editCoopProduct
   );
-
-//  PURCHASE
-router.get('/purchase/my-orders', loginAuth, myOrders);
-router.get(
-  '/purchase',
-  loginAuth,
-  checkPermission(ADMIN, COOPERATIVE),
-  checkRole(SUPER, COOPADMIN),
-  getAllOrders
-);
-router.post('/purchase/checkout', loginAuth, valCheckout, checkout);
-router.get('/purchase/payment-status/:orderRef', loginAuth, paymentStatus);
-router.post(
-  '/purchase/payment-verification',
-  loginAuth,
-  valPayment,
-  paymentVerification
-);
 
 // Users
 router.get(
