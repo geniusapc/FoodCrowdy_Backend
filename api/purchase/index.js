@@ -13,6 +13,7 @@ const { ADMIN, COOPERATIVE, SUPER, COOPADMIN } = require('../../constants');
 const {
   valCheckout,
   valPayment,
+  valPayWithWallet,
 } = require('../../middleware/validation/cooperative');
 
 const {
@@ -22,9 +23,9 @@ const {
 } = require('../../middleware/auth');
 
 //  PURCHASE
-router.get('/purchase/my-orders', loginAuth, myOrders);
+router.get('/my-orders', loginAuth, myOrders);
 router.get(
-  '/purchase',
+  '/',
   loginAuth,
   checkPermission(ADMIN, COOPERATIVE),
   checkRole(SUPER, COOPADMIN),
@@ -33,7 +34,7 @@ router.get(
 
 router.post('/checkout', loginAuth, valCheckout, checkout);
 router.get('/payment-status/:orderRef', loginAuth, paymentStatus);
-router.get('/pay-with-wallet', loginAuth, paymentWithWallet);
+router.post('/pay-with-wallet', loginAuth, valPayWithWallet, paymentWithWallet);
 router.post(
   '/payment-verification',
   loginAuth,
