@@ -138,6 +138,19 @@ module.exports.valPayment = (req, res, next) => {
   req.body = value;
   next();
 };
+module.exports.valPayWithWallet = (req, res, next) => {
+  const { error, value } = Joi.object()
+    .keys({
+      orderRef: Joi.string().trim().required(),
+      transactionPin: Joi.number().min(4).required(),
+    })
+    .validate(req.body);
+
+  if (error) throw error;
+
+  req.body = value;
+  next();
+};
 
 //  USERS
 module.exports.valEditUser = (req, res, next) => {
@@ -150,12 +163,7 @@ module.exports.valEditUser = (req, res, next) => {
       accountStatus: Joi.string().valid('active', 'suspended'),
       permission: Joi.string().valid('admin', 'user', 'cooperative'),
       roles: Joi.array().items(
-        Joi.valid(
-          'product',
-          'customer_care',
-          'coop_admin',
-          'logistics'
-        )
+        Joi.valid('product', 'customer_care', 'coop_admin', 'logistics')
       ),
     })
     .validate(req.body);
