@@ -44,11 +44,12 @@ module.exports = async (req, res, next) => {
     if (!pinIsValid)
       return res.status(422).send({ message: 'Invalid transaction pin' });
 
-    if (user.walletBalance < amount)
-      return res.status(422).send({ message: 'Insufficient balance' });
-    const { walletBalance } = user;
+    const { wallet } = user;
 
-    user.walletBalance = walletBalance - amount;
+    if (wallet.balance < amount)
+      return res.status(422).send({ message: 'Insufficient balance' });
+
+    user.wallet.balance = wallet.balance - amount;
     await user.save();
   }
 

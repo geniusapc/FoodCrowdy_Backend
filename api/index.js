@@ -12,35 +12,16 @@ const addCoopProduct = require('./products/addCoopProduct');
 const editCoopProduct = require('./products/editCoopProduct');
 const deleteCoopProduct = require('./products/deleteCoopProduct');
 
-// PURCHASE
-const myOrders = require('./purchase/myPurchase');
-const getAllOrders = require('./purchase/getAllOrders');
-const checkout = require('./purchase/checkout');
-const paymentStatus = require('./purchase/paymentStatus');
-const paymentVerification = require('./purchase/paymentVerification');
-
 const {
   ADMIN,
-  COOPERATIVE,
   SUPER,
   PRODUCT,
-  COOPADMIN,
 } = require('../constants');
-
-// USERS
-const registeredCoopMember = require('./users/registeredCoopMember');
-const unRegisteredCoopMembers = require('./users/unRegisteredCoopMembers');
-const editUser = require('./users/editUser');
-const changeTransactionPin = require('./users/changeTransactionPin');
 
 const {
   valParamOId,
   valUploadCoopProduct,
   valEditCoopProduct,
-  valCheckout,
-  valPayment,
-  valEditUser,
-  valChangePin,
 } = require('../middleware/validation/cooperative');
 
 const { loginAuth, checkRole, checkPermission } = require('../middleware/auth');
@@ -74,52 +55,6 @@ router
     editCoopProduct
   );
 
-//  PURCHASE
-router.get('/purchase/my-orders', loginAuth, myOrders);
-router.get(
-  '/purchase',
-  loginAuth,
-  checkPermission(ADMIN, COOPERATIVE),
-  checkRole(SUPER, COOPADMIN),
-  getAllOrders
-);
-router.post('/purchase/checkout', loginAuth, valCheckout, checkout);
-router.get('/purchase/payment-status/:orderRef', loginAuth, paymentStatus);
-router.post(
-  '/purchase/payment-verification',
-  loginAuth,
-  valPayment,
-  paymentVerification
-);
 
-// Users
-router.get(
-  '/users/registered-coop-members',
-  loginAuth,
-  checkPermission(ADMIN, COOPERATIVE),
-  checkRole(SUPER, COOPADMIN),
-  registeredCoopMember
-);
-router.get(
-  '/users/unregistered-coop-members',
-  loginAuth,
-  checkPermission(ADMIN, COOPERATIVE),
-  checkRole(SUPER, COOPADMIN),
-  unRegisteredCoopMembers
-);
-router.patch(
-  '/user/:userId',
-  loginAuth,
-  checkPermission(ADMIN, COOPERATIVE),
-  checkRole(SUPER, COOPADMIN),
-  valEditUser,
-  editUser
-);
-router.post(
-  '/user/change-transaction-pin',
-  loginAuth,
-  valChangePin,
-  changeTransactionPin
-);
 
 module.exports = router;
